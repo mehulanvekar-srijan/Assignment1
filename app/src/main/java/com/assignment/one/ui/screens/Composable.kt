@@ -1,20 +1,21 @@
 package com.assignment.one.ui.screens
 
 import android.content.Context
-import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.assignment.one.*
-import com.assignment.one.R
+import com.assignment.one.data.saveData
 import com.assignment.one.data.user
 import com.assignment.one.ui.theme.Assignment1Theme
 import com.assignment.one.ui.theme.Typography
@@ -35,7 +36,7 @@ fun Splash(text: String = "Android-Default") {
 
 //Main Activity
 @Composable
-fun MainActivityTheme(){
+fun MainActivityTheme(context: Context){
     val userNameList = mutableListOf("User Name","Enter User Name")
     val passwordList = mutableListOf("Password","Enter Password")
 
@@ -51,10 +52,22 @@ fun MainActivityTheme(){
         DrawCredentialRows(list = passwordList,type = "p")       // Password  | Enter Password
         Button(onClick = {
 
+            //STEP1: Fetch Credentials from Remote Database
             convertToObject()
+
+            //STEP2: Validate the user input with the fetched credentials
             val status = validate(user.userName, user.password)
 
-            if(status) openDialog.value = false
+            /*
+            * STEP3: if validation is successful save the credentials in a SharedPref
+            *        turnoff AlertDialog
+            *        redirect to Home Screen
+            * */
+            if(status) {
+                openDialog.value = false
+                saveData(context, user.userName, user.password)
+                //Redirect
+            }
             else openDialog.value = true
 
         }) {
@@ -107,28 +120,41 @@ fun DrawCredentialRows(list: List<String>,type: String){
 @Composable
 fun HomeScreenTheme(){
     val numberOfRows = 2
-    convertToArray()
 
-    Column(modifier = Modifier
-        .fillMaxSize()
-        .background(Color.Cyan)) {
+    convertToArray() //Convert JSON to Kotlin Array
+
+    //Main Column
+    Column(modifier = Modifier.fillMaxSize().background(Color.Black)) {
         for (i in 1..numberOfRows) DrawHomeRows()
     }
 }
 
 @Composable
 fun DrawHomeRows(){
-    Row(horizontalArrangement = Arrangement.SpaceAround){
-        index++
-        Column(){
-            Text(text = productList[index].productName)
-            Image(painter = painterResource(id = productList[index].imageUrl.toInt()), contentDescription = "")
+    Row(){
+        Box(modifier = Modifier.fillMaxWidth(0.5f).padding(10.dp)) {
+            DrawHomeEachColumn()
         }
+        Box(modifier = Modifier.padding(10.dp)) {
+            DrawHomeEachColumn()
+        }
+    }
+}
 
-        index++
-        Column {
+@Composable //Generates Each individual card in of each column in a row
+fun DrawHomeEachColumn(){
+    index++
+    Card(modifier = Modifier.fillMaxWidth(), shape = RoundedCornerShape(8.dp)) {
+        Column(
+            modifier = Modifier.height(200.dp),
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.Center
+        ) {
+            Image(
+                painter = painterResource(id = productList[index].imageUrl.toInt()),
+                contentDescription = "",
+                contentScale = ContentScale.Fit)
             Text(text = productList[index].productName)
-            Image(painter = painterResource(id = productList[index].imageUrl.toInt()), contentDescription = "")
         }
     }
 }
