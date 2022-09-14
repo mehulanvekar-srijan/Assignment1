@@ -24,11 +24,12 @@ import com.assignment.one.extra.imageArray
 import com.assignment.one.navigation.Screen
 import com.assignment.one.ui.theme.Assignment1Theme
 import com.assignment.one.ui.theme.Typography
+import kotlinx.coroutines.delay
 import kotlin.concurrent.thread
 
 //Splash Screen
 @Composable
-fun Splash(text: String = "Android-Default") {
+fun Splash(text: String = "Android-Default",context: Context,navController: NavHostController) {
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -38,11 +39,38 @@ fun Splash(text: String = "Android-Default") {
     ) {
         Text(text = text, color = Color.Cyan, style = Typography.h5)
     }
+
+    //TODO: use delay()
+    Thread.sleep(2000) //STEP1.1: Block for 2 sec
+
+
+    //STEP2: Read JSON from file
+    readJsonFromAssets(context)
+
+    //STEP3: Check if user is registered
+    loadData(context) //Load SharedPref value of the user
+
+    /* STEP5:
+     * IF the userName and password is empty,
+     * That means user is not registered, Hence show login page
+     * And then save the user credentials in SharedPrefs
+     *
+     * ELSE directly redirect to Home screen
+     * as the user is already registered
+     */
+    if (user.userName.isEmpty() && user.password.isEmpty()){
+        MainActivityTheme(context = context,navController)
+    }
+    else {
+        navController.navigate(Screen.HomeScreen.route){
+            popUpTo(Screen.MainScreen.route) { inclusive = true }
+        }
+    }
 }
 
 //Main Activity
 @Composable
-fun MainActivityTheme(context: Context){
+fun MainActivityTheme(context: Context,navController: NavHostController){
     val userNameList = mutableListOf("User Name","Enter User Name")
     val passwordList = mutableListOf("Password","Enter Password")
 
@@ -72,7 +100,10 @@ fun MainActivityTheme(context: Context){
             if(status) {
                 openDialog.value = false
                 saveData(context, user.userName, user.password)
-                //Redirect
+                //TODO : Redirect not working
+                navController.navigate(Screen.HomeScreen.route){
+                    popUpTo(Screen.MainScreen.route) { inclusive = true }
+                }
             }
             else openDialog.value = true
 
@@ -130,7 +161,9 @@ fun HomeScreenTheme(){
     convertToArray() //Convert JSON to Kotlin Array
 
     //Main Column
-    Column(modifier = Modifier.fillMaxSize().background(Color.Black)) {
+    Column(modifier = Modifier
+        .fillMaxSize()
+        .background(Color.Black)) {
         for (i in 1..numberOfRows) DrawHomeRows()
     }
 }
@@ -138,7 +171,9 @@ fun HomeScreenTheme(){
 @Composable
 fun DrawHomeRows(){
     Row(){
-        Box(modifier = Modifier.fillMaxWidth(0.5f).padding(10.dp)) {
+        Box(modifier = Modifier
+            .fillMaxWidth(0.5f)
+            .padding(10.dp)) {
             DrawHomeEachColumn()
         }
         Box(modifier = Modifier.padding(10.dp)) {

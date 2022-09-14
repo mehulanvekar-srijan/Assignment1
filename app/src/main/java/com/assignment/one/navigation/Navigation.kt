@@ -22,12 +22,12 @@ sealed class Screen(val route:String){
 }
 
 @Composable
-fun Navigation(navController: NavHostController) {
+fun Navigation(navController: NavHostController,context: Context) {
     NavHost(
         navController = navController,
         startDestination = Screen.MainScreen.route
     ){
-        composable(route = Screen.MainScreen.route){ Splash("Mehul") }
+        composable(route = Screen.MainScreen.route){ Splash("Mehul",context,navController) }
         composable(route = Screen.HomeScreen.route){ HomeScreenTheme() }
     }
 }
