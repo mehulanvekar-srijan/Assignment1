@@ -1,5 +1,6 @@
 package com.assignment.one
 
+import android.content.Context
 import android.util.Log
 import com.assignment.one.data.User
 import com.assignment.one.data.Product
@@ -26,4 +27,17 @@ fun convertToArray(){
 //returns true if validation is successful else false
 fun validate(inputName:String , inputPassword: String): Boolean{
     return (inputName == apiUser.userName && inputPassword == apiUser.password)
+}
+
+
+fun readJsonFromAssets(context: Context){
+    json = context.assets.open("user.json").bufferedReader().use {
+        it.readText()
+    }
+    data = context.assets.open("product.json").bufferedReader().use {
+        it.readText()
+    }
+
+    Log.d("Mehul", "Str User: $json")
+    Log.d("Mehul", "Str Products: $data")
 }

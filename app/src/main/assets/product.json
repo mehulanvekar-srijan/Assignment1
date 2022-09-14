@@ -1,0 +1,18 @@
+[
+  {
+    'productName': 'acer',
+    'imageUrl': '0'
+  },
+  {
+    'productName': 'dell',
+    'imageUrl': '1'
+  },
+  {
+    'productName': 'lenovo',
+    'imageUrl': '2'
+  },
+  {
+    'productName': 'macbook',
+    'imageUrl': '3'
+  }
+]

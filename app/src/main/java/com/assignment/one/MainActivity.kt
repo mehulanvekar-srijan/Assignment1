@@ -27,6 +27,9 @@ class MainActivity : ComponentActivity() {
             Splash(text = "Mehul")
         }
 
+        //STEP2: Read JSON from file
+        readJsonFromAssets(this)
+
         thread {
             Thread.sleep(2000) //STEP2: Block for 2 sec
 

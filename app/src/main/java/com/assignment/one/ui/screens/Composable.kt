@@ -15,8 +15,10 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.assignment.one.*
+import com.assignment.one.R
 import com.assignment.one.data.saveData
 import com.assignment.one.data.user
+import com.assignment.one.extra.imageArray
 import com.assignment.one.ui.theme.Assignment1Theme
 import com.assignment.one.ui.theme.Typography
 
@@ -151,7 +153,7 @@ fun DrawHomeEachColumn(){
             verticalArrangement = Arrangement.Center
         ) {
             Image(
-                painter = painterResource(id = productList[index].imageUrl.toInt()),
+                painter = painterResource(id = imageArray[index]),
                 contentDescription = "",
                 contentScale = ContentScale.Fit)
             Text(text = productList[index].productName)
