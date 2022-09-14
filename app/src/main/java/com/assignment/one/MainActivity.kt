@@ -5,11 +5,7 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
-import com.assignment.one.data.user
 import com.assignment.one.navigation.Navigation
-import com.assignment.one.ui.screens.HomeScreenTheme
-import com.assignment.one.ui.screens.MainActivityTheme
-import kotlin.concurrent.thread
 
 class MainActivity : ComponentActivity() {
 

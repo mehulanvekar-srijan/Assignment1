@@ -1,6 +1,8 @@
 package com.assignment.one.ui.screens
 
 import android.content.Context
+import android.content.Intent
+import android.util.Log
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -24,7 +26,7 @@ import com.assignment.one.extra.imageArray
 import com.assignment.one.navigation.Screen
 import com.assignment.one.ui.theme.Assignment1Theme
 import com.assignment.one.ui.theme.Typography
-import kotlinx.coroutines.delay
+import kotlinx.coroutines.*
 import kotlin.concurrent.thread
 
 //Splash Screen
@@ -40,30 +42,33 @@ fun Splash(text: String = "Android-Default",context: Context,navController: NavH
         Text(text = text, color = Color.Cyan, style = Typography.h5)
     }
 
-    //TODO: use delay()
-    Thread.sleep(2000) //STEP1.1: Block for 2 sec
+    LaunchedEffect(key1 = true){
+        //STEP2: Read JSON from file
+        readJsonFromAssets(context)
 
+        //STEP3: Check if user is registered
+        loadData(context) //Load SharedPref value of the user
 
-    //STEP2: Read JSON from file
-    readJsonFromAssets(context)
+        delay(2000)
 
-    //STEP3: Check if user is registered
-    loadData(context) //Load SharedPref value of the user
-
-    /* STEP5:
-     * IF the userName and password is empty,
-     * That means user is not registered, Hence show login page
-     * And then save the user credentials in SharedPrefs
-     *
-     * ELSE directly redirect to Home screen
-     * as the user is already registered
-     */
-    if (user.userName.isEmpty() && user.password.isEmpty()){
-        MainActivityTheme(context = context,navController)
-    }
-    else {
-        navController.navigate(Screen.HomeScreen.route){
-            popUpTo(Screen.MainScreen.route) { inclusive = true }
+        /* STEP5:
+         * IF the userName and password is empty,
+         * That means user is not registered, Hence show login page
+         * And then save the user credentials in SharedPrefs
+         *
+         * ELSE directly redirect to Home screen
+         * as the user is already registered
+         */
+        if (user.userName.isEmpty() && user.password.isEmpty()){
+            //MainActivityTheme(context = context,navController) //Called from Composable only
+            navController.navigate(Screen.LogInScreen.route){
+                popUpTo(Screen.MainScreen.route) { inclusive = true }
+            }
+        }
+        else {
+            navController.navigate(Screen.HomeScreen.route){
+                popUpTo(Screen.MainScreen.route) { inclusive = true }
+            } //Called from Main Thread only [cannot be blocked]
         }
     }
 }
@@ -71,6 +76,7 @@ fun Splash(text: String = "Android-Default",context: Context,navController: NavH
 //Main Activity
 @Composable
 fun MainActivityTheme(context: Context,navController: NavHostController){
+
     val userNameList = mutableListOf("User Name","Enter User Name")
     val passwordList = mutableListOf("Password","Enter Password")
 
@@ -102,7 +108,7 @@ fun MainActivityTheme(context: Context,navController: NavHostController){
                 saveData(context, user.userName, user.password)
                 //TODO : Redirect not working
                 navController.navigate(Screen.HomeScreen.route){
-                    popUpTo(Screen.MainScreen.route) { inclusive = true }
+                    popUpTo(Screen.LogInScreen.route) { inclusive = true }
                 }
             }
             else openDialog.value = true

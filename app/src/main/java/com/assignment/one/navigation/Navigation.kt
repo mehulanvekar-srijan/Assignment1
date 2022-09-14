@@ -17,8 +17,9 @@ import com.assignment.one.ui.screens.Splash
 import kotlin.concurrent.thread
 
 sealed class Screen(val route:String){
-    object MainScreen : Screen("MainScreen")
-    object HomeScreen : Screen("HomeScreen")
+    object MainScreen : Screen("MainScreen")     //Splash Theme
+    object LogInScreen : Screen("LogInScreen")   // Main Activity Theme
+    object HomeScreen : Screen("HomeScreen")     // Home Screen Theme
 }
 
 @Composable
@@ -28,6 +29,7 @@ fun Navigation(navController: NavHostController,context: Context) {
         startDestination = Screen.MainScreen.route
     ){
         composable(route = Screen.MainScreen.route){ Splash("Mehul",context,navController) }
+        composable(route = Screen.LogInScreen.route){ MainActivityTheme(context = context, navController = navController) } //
         composable(route = Screen.HomeScreen.route){ HomeScreenTheme() }
     }
 }
