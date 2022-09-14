@@ -1,6 +1,7 @@
 package com.assignment.one.ui.screens
 
 import android.content.Context
+import androidx.activity.compose.setContent
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
@@ -14,13 +15,16 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavHostController
 import com.assignment.one.*
-import com.assignment.one.R
+import com.assignment.one.data.loadData
 import com.assignment.one.data.saveData
 import com.assignment.one.data.user
 import com.assignment.one.extra.imageArray
+import com.assignment.one.navigation.Screen
 import com.assignment.one.ui.theme.Assignment1Theme
 import com.assignment.one.ui.theme.Typography
+import kotlin.concurrent.thread
 
 //Splash Screen
 @Composable
