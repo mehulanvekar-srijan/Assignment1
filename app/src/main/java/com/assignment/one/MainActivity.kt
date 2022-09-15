@@ -25,28 +25,6 @@ class MainActivity : ComponentActivity() {
             navController = rememberNavController()
             Navigation(navController = navController,context = this)
         }
-
         getApiData()
-    }
-
-    fun getApiData(){
-        val retrofitBuilder = Retrofit.Builder()
-            .addConverterFactory(GsonConverterFactory.create())
-            .baseUrl("https://fakestoreapi.com/")
-            .build()
-            .create(RetrofitInterface::class.java)
-
-        val retrofitData = retrofitBuilder.getProductData()
-
-        retrofitData.enqueue(object : Callback<List<Product>?>{
-            override fun onResponse(call: Call<List<Product>?>, response: Response<List<Product>?>){
-                Log.d("RetFt", "onResponse: ${response.body().toString()}")
-            }
-
-            override fun onFailure(call: Call<List<Product>?>, t: Throwable) {
-                Log.d("RetFt", "onFailure: $t")
-            }
-
-        })
     }
 }

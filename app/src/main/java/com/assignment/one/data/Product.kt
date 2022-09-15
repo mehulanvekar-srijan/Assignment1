@@ -7,4 +7,5 @@ data class Product(
     var productName: String,
 
     @SerializedName("image")
-    var imageUrl: String)
+    var imageUrl: String
+)

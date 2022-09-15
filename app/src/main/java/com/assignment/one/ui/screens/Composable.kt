@@ -1,9 +1,6 @@
 package com.assignment.one.ui.screens
 
 import android.content.Context
-import android.content.Intent
-import android.util.Log
-import androidx.activity.compose.setContent
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
@@ -13,21 +10,21 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.vector.rememberVectorPainter
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
+import coil.compose.rememberImagePainter
 import com.assignment.one.*
 import com.assignment.one.data.loadData
 import com.assignment.one.data.saveData
 import com.assignment.one.data.user
-import com.assignment.one.extra.imageArray
 import com.assignment.one.navigation.Screen
 import com.assignment.one.ui.theme.Assignment1Theme
 import com.assignment.one.ui.theme.Typography
 import kotlinx.coroutines.*
-import kotlin.concurrent.thread
 
 //Splash Screen
 @Composable
@@ -162,9 +159,9 @@ fun DrawCredentialRows(list: List<String>,type: String){
 //Home Screen
 @Composable
 fun HomeScreenTheme(){
-    val numberOfRows = 2
+    val numberOfRows = 3
 
-    convertToArray() //Convert JSON to Kotlin Array
+    //convertToArray() //Convert JSON to Kotlin Array
 
     //Main Column
     Column(modifier = Modifier
@@ -191,17 +188,14 @@ fun DrawHomeRows(){
 @Composable //Generates Each individual card in of each column in a row
 fun DrawHomeEachColumn(){
     index++
-    Card(modifier = Modifier.fillMaxWidth(), shape = RoundedCornerShape(8.dp)) {
-        Column(
-            modifier = Modifier.height(200.dp),
-            horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.Center
-        ) {
-            Image(
-                painter = painterResource(id = imageArray[index]),
-                contentDescription = "",
-                contentScale = ContentScale.Fit)
-            Text(text = productList[index].productName)
+    Card(modifier = Modifier.fillMaxWidth().height(200.dp), shape = RoundedCornerShape(8.dp)) {
+        Image(painter = rememberImagePainter(productList[index].imageUrl),
+            contentDescription = "",
+            contentScale = ContentScale.Fit)
+
+        Box(contentAlignment = Alignment.BottomCenter) {
+            Text(text = productList[index].productName,
+                modifier = Modifier.padding(5.dp).background(Color.White))
         }
     }
 }

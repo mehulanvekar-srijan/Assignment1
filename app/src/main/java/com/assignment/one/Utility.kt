@@ -6,8 +6,14 @@ import com.assignment.one.data.User
 import com.assignment.one.data.Product
 import com.assignment.one.extra.data
 import com.assignment.one.extra.json
+import com.assignment.one.networking.RetrofitInterface
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
+import retrofit2.Retrofit
+import retrofit2.converter.gson.GsonConverterFactory
 
 lateinit var apiUser: User
 
@@ -19,12 +25,13 @@ fun convertToObject(){
 
 //Converts JSON Array of objects to Kotlin Array of objects (Of type Product)
 var index = -1
-lateinit var productList: Array<Product>
-fun convertToArray(){
-    var gson = Gson()
-    val typeToken = object : TypeToken<Array<Product>>(){}.type
-    productList = gson.fromJson(data, typeToken)
-}
+lateinit var productList: List<Product>
+
+//fun convertToArray(){
+//    var gson = Gson()
+//    val typeToken = object : TypeToken<Array<Product>>(){}.type
+//    productList = gson.fromJson(data, typeToken)
+//}
 
 //returns true if validation is successful else false
 fun validate(inputName:String , inputPassword: String): Boolean{
@@ -33,14 +40,38 @@ fun validate(inputName:String , inputPassword: String): Boolean{
 
 //Read JSON data stored in Assets folder
 fun readJsonFromAssets(context: Context){
+
+    //Read JSON object from asset for User
     json = context.assets.open("user.json").bufferedReader().use {
         it.readText()
     }
-    data = context.assets.open("product.json").bufferedReader().use {
-        it.readText()
-    }
 
-    Log.d("Mehul", "Str User: $json")
-    Log.d("Mehul", "Str Products: $data")
+    //Read JSON Array from asset for Products
+//    data = context.assets.open("product.json").bufferedReader().use {
+//        it.readText()
+//    }
+}
+
+fun getApiData(){
+
+    val retrofitBuilder = Retrofit.Builder()
+        .addConverterFactory(GsonConverterFactory.create())
+        .baseUrl("https://fakestoreapi.com/")
+        .build()
+        .create(RetrofitInterface::class.java)
+
+    val retrofitData = retrofitBuilder.getProductData()
+
+    retrofitData.enqueue(object : Callback<List<Product>?> {
+        override fun onResponse(call: Call<List<Product>?>, response: Response<List<Product>?>){
+            Log.d("RetFt", "onResponse: ${response.body().toString()}")
+            if(response.body() != null) productList = response.body()!!
+            Log.d("RetFt", "onFailure: ${productList.size}")
+        }
+
+        override fun onFailure(call: Call<List<Product>?>, t: Throwable) {
+            Log.d("RetFt", "onFailure: $t")
+        }
+    })
 }
 
