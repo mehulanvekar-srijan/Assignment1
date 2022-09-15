@@ -1,3 +1,10 @@
 package com.assignment.one.data
 
-data class Product(var productName: String, var imageUrl: String)
+import com.google.gson.annotations.SerializedName
+
+data class Product(
+    @SerializedName("title")
+    var productName: String,
+
+    @SerializedName("image")
+    var imageUrl: String)

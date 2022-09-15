@@ -32,6 +32,7 @@ import kotlin.concurrent.thread
 //Splash Screen
 @Composable
 fun Splash(text: String = "Android-Default",context: Context,navController: NavHostController) {
+    //STEP1: Draw Screen Views
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -40,6 +41,7 @@ fun Splash(text: String = "Android-Default",context: Context,navController: NavH
         verticalArrangement = Arrangement.Center
     ) {
         Text(text = text, color = Color.Cyan, style = Typography.h5)
+        CircularProgressIndicator(modifier = Modifier.padding(50.dp), color = Color.Cyan)
     }
 
     LaunchedEffect(key1 = true){
@@ -51,7 +53,7 @@ fun Splash(text: String = "Android-Default",context: Context,navController: NavH
 
         delay(2000)
 
-        /* STEP5:
+        /* STEP4:
          * IF the userName and password is empty,
          * That means user is not registered, Hence show login page
          * And then save the user credentials in SharedPrefs
@@ -60,7 +62,6 @@ fun Splash(text: String = "Android-Default",context: Context,navController: NavH
          * as the user is already registered
          */
         if (user.userName.isEmpty() && user.password.isEmpty()){
-            //MainActivityTheme(context = context,navController) //Called from Composable only
             navController.navigate(Screen.LogInScreen.route){
                 popUpTo(Screen.MainScreen.route) { inclusive = true }
             }
@@ -68,7 +69,7 @@ fun Splash(text: String = "Android-Default",context: Context,navController: NavH
         else {
             navController.navigate(Screen.HomeScreen.route){
                 popUpTo(Screen.MainScreen.route) { inclusive = true }
-            } //Called from Main Thread only [cannot be blocked]
+            }
         }
     }
 }
@@ -106,7 +107,6 @@ fun MainActivityTheme(context: Context,navController: NavHostController){
             if(status) {
                 openDialog.value = false
                 saveData(context, user.userName, user.password)
-                //TODO : Redirect not working
                 navController.navigate(Screen.HomeScreen.route){
                     popUpTo(Screen.LogInScreen.route) { inclusive = true }
                 }

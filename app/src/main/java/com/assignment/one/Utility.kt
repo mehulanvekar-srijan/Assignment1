@@ -11,11 +11,13 @@ import com.google.gson.reflect.TypeToken
 
 lateinit var apiUser: User
 
+//Converts JSON object to Kotlin object
 fun convertToObject(){
     val gson = Gson()
     apiUser = gson.fromJson(json, User::class.java)
 }
 
+//Converts JSON Array of objects to Kotlin Array of objects (Of type Product)
 var index = -1
 lateinit var productList: Array<Product>
 fun convertToArray(){
@@ -29,7 +31,7 @@ fun validate(inputName:String , inputPassword: String): Boolean{
     return (inputName == apiUser.userName && inputPassword == apiUser.password)
 }
 
-
+//Read JSON data stored in Assets folder
 fun readJsonFromAssets(context: Context){
     json = context.assets.open("user.json").bufferedReader().use {
         it.readText()
@@ -41,3 +43,4 @@ fun readJsonFromAssets(context: Context){
     Log.d("Mehul", "Str User: $json")
     Log.d("Mehul", "Str Products: $data")
 }
+
