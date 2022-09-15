@@ -1,14 +1,17 @@
 package com.assignment.one.ui.screens
 
 import android.content.Context
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.rememberVectorPainter
 import androidx.compose.ui.layout.ContentScale
@@ -157,47 +160,32 @@ fun DrawCredentialRows(list: List<String>,type: String){
 }
 
 //Home Screen
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun HomeScreenTheme(){
-    val numberOfRows = 3
+    LazyVerticalGrid(
+        cells = GridCells.Fixed(2),
+        modifier = Modifier.background(Color.Black),
+        content = {
+            items(productList.size){ index ->
+                Card(modifier = Modifier
+                    .fillMaxWidth()
+                    .height(200.dp)
+                    .padding(5.dp),
+                    shape = RoundedCornerShape(8.dp),
+                ) {
+                    Image(painter = rememberImagePainter(productList[index].imageUrl),
+                        contentDescription = "",
+                        contentScale = ContentScale.Fit)
 
-    //convertToArray() //Convert JSON to Kotlin Array
-
-    //Main Column
-    Column(modifier = Modifier
-        .fillMaxSize()
-        .background(Color.Black)) {
-        for (i in 1..numberOfRows) DrawHomeRows()
-    }
-}
-
-@Composable
-fun DrawHomeRows(){
-    Row(){
-        Box(modifier = Modifier
-            .fillMaxWidth(0.5f)
-            .padding(10.dp)) {
-            DrawHomeEachColumn()
-        }
-        Box(modifier = Modifier.padding(10.dp)) {
-            DrawHomeEachColumn()
-        }
-    }
-}
-
-@Composable //Generates Each individual card in of each column in a row
-fun DrawHomeEachColumn(){
-    index++
-    Card(modifier = Modifier.fillMaxWidth().height(200.dp), shape = RoundedCornerShape(8.dp)) {
-        Image(painter = rememberImagePainter(productList[index].imageUrl),
-            contentDescription = "",
-            contentScale = ContentScale.Fit)
-
-        Box(contentAlignment = Alignment.BottomCenter) {
-            Text(text = productList[index].productName,
-                modifier = Modifier.padding(5.dp).background(Color.White))
-        }
-    }
+                    Box(contentAlignment = Alignment.BottomCenter,
+                        modifier = Modifier.background(Brush.verticalGradient(colors = listOf(Color.Transparent,Color.Black),
+                        startY = 300F))) {
+                        Text(text = productList[index].productName, modifier = Modifier.padding(5.dp), color = Color.White)
+                    }
+                }
+            }
+        })
 }
 
 @Preview(showBackground = true)
