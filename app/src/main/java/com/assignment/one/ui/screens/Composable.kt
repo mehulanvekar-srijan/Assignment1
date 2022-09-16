@@ -1,6 +1,9 @@
 package com.assignment.one.ui.screens
 
+import android.app.Person
 import android.content.Context
+import android.graphics.fonts.FontStyle
+import android.util.Log
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -16,11 +19,15 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.rememberVectorPainter
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import coil.compose.rememberImagePainter
 import com.assignment.one.*
+import com.assignment.one.data.Product
 import com.assignment.one.data.loadData
 import com.assignment.one.data.saveData
 import com.assignment.one.data.user
@@ -28,6 +35,7 @@ import com.assignment.one.navigation.Screen
 import com.assignment.one.ui.theme.Assignment1Theme
 import com.assignment.one.ui.theme.Typography
 import kotlinx.coroutines.*
+import java.lang.NullPointerException
 
 //Splash Screen
 @Composable
@@ -163,35 +171,56 @@ fun DrawCredentialRows(list: List<String>,type: String){
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun HomeScreenTheme(){
-    LazyVerticalGrid(
-        cells = GridCells.Fixed(2),
-        modifier = Modifier.background(Color.Black),
-        content = {
-            items(productList.size){ index ->
-                Card(modifier = Modifier
-                    .fillMaxWidth()
-                    .height(200.dp)
-                    .padding(5.dp),
-                    shape = RoundedCornerShape(8.dp),
-                ) {
-                    Image(painter = rememberImagePainter(productList[index].imageUrl),
-                        contentDescription = "",
-                        contentScale = ContentScale.Fit)
 
-                    Box(contentAlignment = Alignment.BottomCenter,
-                        modifier = Modifier.background(Brush.verticalGradient(colors = listOf(Color.Transparent,Color.Black),
-                        startY = 300F))) {
-                        Text(text = productList[index].productName, modifier = Modifier.padding(5.dp), color = Color.White)
+    var newList = productList ?: listOf<Product>()
+
+    if(newList.isEmpty()){
+        NoNetworkConnectionError()
+    }
+    else {
+        LazyVerticalGrid(
+            cells = GridCells.Fixed(2),
+            modifier = Modifier.background(Color.White),
+            content = {
+                items(newList.size){ index ->
+                    Card(modifier = Modifier
+                        .fillMaxWidth()
+                        .height(250.dp)
+                        .padding(5.dp),
+                        elevation = 10.dp,
+                        shape = RoundedCornerShape(8.dp),
+                    ) {
+                        Image(painter = rememberImagePainter(newList[index].imageUrl),
+                            contentDescription = "",
+                            contentScale = ContentScale.Fit)
+
+                        Box(contentAlignment = Alignment.BottomCenter,
+                            modifier = Modifier.background(Brush.verticalGradient(colors = listOf(Color.Transparent,Color.DarkGray),
+                                startY = 400f))) {
+                            Text(text = newList[index].productName, modifier = Modifier.padding(5.dp), color = Color.White)
+                        }
                     }
                 }
-            }
-        })
+            })
+    }
+
 }
 
+@Composable
+fun NoNetworkConnectionError() {
+    Box(modifier = Modifier
+        .fillMaxSize()
+        .background(Color.Red),
+        contentAlignment = Alignment.Center,
+    ) {
+        Text(text = "Please Connect To Network", color = Color.White, fontSize = 50.sp, textAlign = TextAlign.Center)
+    }
+}
 @Preview(showBackground = true)
 @Composable
 fun DefaultPreview() {
     Assignment1Theme {
+        //NoNetworkConnectionError()
         HomeScreenTheme()
     }
 }

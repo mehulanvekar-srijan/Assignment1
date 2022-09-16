@@ -25,13 +25,6 @@ fun convertToObject(){
 
 //Converts JSON Array of objects to Kotlin Array of objects (Of type Product)
 var index = -1
-lateinit var productList: List<Product>
-
-//fun convertToArray(){
-//    var gson = Gson()
-//    val typeToken = object : TypeToken<Array<Product>>(){}.type
-//    productList = gson.fromJson(data, typeToken)
-//}
 
 //returns true if validation is successful else false
 fun validate(inputName:String , inputPassword: String): Boolean{
@@ -45,13 +38,9 @@ fun readJsonFromAssets(context: Context){
     json = context.assets.open("user.json").bufferedReader().use {
         it.readText()
     }
-
-    //Read JSON Array from asset for Products
-//    data = context.assets.open("product.json").bufferedReader().use {
-//        it.readText()
-//    }
 }
 
+var productList: List<Product>? = null
 fun getApiData(){
 
     val retrofitBuilder = Retrofit.Builder()
@@ -66,7 +55,7 @@ fun getApiData(){
         override fun onResponse(call: Call<List<Product>?>, response: Response<List<Product>?>){
             Log.d("RetFt", "onResponse: ${response.body().toString()}")
             if(response.body() != null) productList = response.body()!!
-            Log.d("RetFt", "onFailure: ${productList.size}")
+            Log.d("RetFt", "onResponse: size = ${productList?.size}")
         }
 
         override fun onFailure(call: Call<List<Product>?>, t: Throwable) {
