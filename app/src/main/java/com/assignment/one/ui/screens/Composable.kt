@@ -10,6 +10,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.*
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -20,6 +21,9 @@ import androidx.compose.ui.graphics.vector.rememberVectorPainter
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.text.input.PasswordVisualTransformation
+import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -91,7 +95,7 @@ fun MainActivityTheme(context: Context,navController: NavHostController){
 
     Column(modifier = Modifier
         .fillMaxSize()
-        .background(Color.Yellow),
+        .background(Color.White),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center
     ) {
@@ -121,7 +125,8 @@ fun MainActivityTheme(context: Context,navController: NavHostController){
             }
             else openDialog.value = true
 
-        }) {
+        }
+        ) {
             Text(text = "Lets Go")
         }      // Button : Lets Go
 
@@ -156,10 +161,13 @@ fun DrawCredentialRows(list: List<String>,type: String){
         Column(modifier = Modifier.padding(10.dp)){
 
             val input = remember { mutableStateOf("") }
+
             TextField(
                 value = input.value, onValueChange = { input.value = it },
-                label = { Text(text = list[1]) }
-            )
+                label = { Text(text = list[1]) },
+                visualTransformation = if(type == "p") PasswordVisualTransformation()
+                                       else VisualTransformation.None,
+                )
 
             if(type == "un") user.userName = input.value
             else user.password = input.value
@@ -172,7 +180,7 @@ fun DrawCredentialRows(list: List<String>,type: String){
 @Composable
 fun HomeScreenTheme(){
 
-    var newList = productList ?: listOf<Product>()
+    var newList = productList?.shuffled() ?: listOf<Product>()
 
     if(newList.isEmpty()){
         NoNetworkConnectionError()
