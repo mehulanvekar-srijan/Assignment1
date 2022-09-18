@@ -14,7 +14,6 @@ import retrofit2.converter.gson.GsonConverterFactory
 
 class MainActivity : ComponentActivity() {
 
-    val context = this
     lateinit var navController: NavHostController
 
     override fun onCreate(savedInstanceState: Bundle?) {
