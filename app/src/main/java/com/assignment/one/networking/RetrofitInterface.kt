@@ -1,6 +1,6 @@
 package com.assignment.one.networking
 
-import com.assignment.one.data.Product
+import com.assignment.one.domain.model.Product
 import retrofit2.Call
 import retrofit2.http.GET
 

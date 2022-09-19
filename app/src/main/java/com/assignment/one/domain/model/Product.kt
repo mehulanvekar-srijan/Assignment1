@@ -1,4 +1,4 @@
-package com.assignment.one.data
+package com.assignment.one.domain.model
 
 import com.google.gson.annotations.SerializedName
 
