@@ -14,6 +14,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
+import com.assignment.one.ui.theme.*
 import com.assignment.one.ui.theme.Typography
 import com.assignment.one.viewmodel.SplashScreenViewModel
 
@@ -27,12 +28,15 @@ fun Splash(text: String = "Android-Default",
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .background(Color.Black),
+            .background(SplashScreenBackground),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center
     ) {
-        Text(text = text, color = Color.Cyan, style = Typography.h5)
-        CircularProgressIndicator(modifier = Modifier.padding(50.dp), color = Color.Cyan)
+        Text(text = text, color = SplashScreenText, style = Typography.h5)
+        CircularProgressIndicator(
+            modifier = Modifier.padding(50.dp),
+            color = SplashScreenIndicator
+        )
     }
 
     splashScreenViewModel.execute(rememberCoroutineScope(),context,navController)

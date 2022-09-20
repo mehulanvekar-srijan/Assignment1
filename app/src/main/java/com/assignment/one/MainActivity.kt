@@ -4,9 +4,11 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
+import androidx.compose.ui.graphics.Color
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.assignment.one.networking.HttpClient
+import com.assignment.one.ui.theme.Assignment1Theme
 import com.assignment.one.utils.Navigation
 import com.assignment.one.viewmodel.HomeScreenViewModel
 import com.assignment.one.viewmodel.LoginViewModel
@@ -24,13 +26,15 @@ class MainActivity : ComponentActivity() {
 
         //Call Navigation Controller which shows Splash() as first screen
         setContent{
-            Navigation(
-                navController = rememberNavController(),
-                context = this,
-                loginViewModel = loginViewModel,
-                splashScreenViewModel = splashScreenViewModel,
-                homeScreenViewModel = homeScreenViewModel
-            )
+            Assignment1Theme(){
+                Navigation(
+                    navController = rememberNavController(),
+                    context = this,
+                    loginViewModel = loginViewModel,
+                    splashScreenViewModel = splashScreenViewModel,
+                    homeScreenViewModel = homeScreenViewModel
+                )
+            }
         }
     }
 }
