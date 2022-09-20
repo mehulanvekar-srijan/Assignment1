@@ -8,6 +8,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.assignment.one.networking.HttpClient
 import com.assignment.one.utils.Navigation
+import com.assignment.one.viewmodel.HomeScreenViewModel
 import com.assignment.one.viewmodel.LoginViewModel
 import com.assignment.one.viewmodel.SplashScreenViewModel
 import kotlinx.coroutines.CoroutineScope
@@ -16,6 +17,7 @@ class MainActivity : ComponentActivity() {
 
     private val loginViewModel: LoginViewModel by viewModels()
     private val splashScreenViewModel: SplashScreenViewModel by viewModels()
+    private val homeScreenViewModel: HomeScreenViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -26,7 +28,8 @@ class MainActivity : ComponentActivity() {
                 navController = rememberNavController(),
                 context = this,
                 loginViewModel = loginViewModel,
-                splashScreenViewModel = splashScreenViewModel
+                splashScreenViewModel = splashScreenViewModel,
+                homeScreenViewModel = homeScreenViewModel
             )
         }
     }

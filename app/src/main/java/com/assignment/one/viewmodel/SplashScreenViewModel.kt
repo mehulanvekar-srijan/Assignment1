@@ -13,45 +13,24 @@ import kotlinx.coroutines.launch
 
 class SplashScreenViewModel : ViewModel() {
 
-    private var timer = 1
-
     fun execute(scope: CoroutineScope, context: Context, navController: NavHostController){
         scope.launch {
-
             //Load user date from shared pref
             val user = localRepository.loadUserData(context)
 
-            //Ask Repo to fetch JSON data
-            remoteRepository.fetchFromServer()
+            delay(2000)
 
-            //Wait for 5 sec for the productList to get filled
-            while(timer <= 5) {
-                delay(1000)
-                if(remoteRepository.getProductList().isEmpty()) {
-                    timer ++
-                    continue
-                }
-                else break
-            }
-
-            //If productList is still empty go to Error Screen
-            if(remoteRepository.getProductList().isEmpty()){
-                navController.navigate(Screen.NoNetworkScreen.route){
+            if (user.userName.isEmpty() && user.password.isEmpty()){
+                navController.navigate(Screen.LogInScreen.route){
                     popUpTo(Screen.MainScreen.route) { inclusive = true }
                 }
             }
-            else { //Else go to LoginScreen / HomeScreen
-                if (user.userName.isEmpty() && user.password.isEmpty()){
-                    navController.navigate(Screen.LogInScreen.route){
-                        popUpTo(Screen.MainScreen.route) { inclusive = true }
-                    }
-                }
-                else {
-                    navController.navigate(Screen.HomeScreen.route){
-                        popUpTo(Screen.MainScreen.route) { inclusive = true }
-                    }
+            else {
+                navController.navigate(Screen.HomeScreen.route){
+                    popUpTo(Screen.MainScreen.route) { inclusive = true }
                 }
             }
+
         }
     }
 

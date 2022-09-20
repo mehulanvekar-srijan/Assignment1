@@ -15,7 +15,6 @@ object RemoteRepository {
 
     fun getProductList(): List<Product> = productList
     fun setProductList(list: List<Product>) { productList = list }
-
     fun fetchFromServer() = HttpClient().getApiResponse()
 
 }
