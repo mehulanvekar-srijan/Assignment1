@@ -35,7 +35,7 @@ fun LogInScreenTheme(context: Context, navController: NavHostController, loginVi
                 Text(text = "User Name", color = LoginText, textAlign = TextAlign.Center)
             }
             Column(modifier = Modifier.padding(10.dp)){
-                TextField(
+                OutlinedTextField(
                     value = loginViewModel.userNameState.value,
                     onValueChange = {
                         loginViewModel.onUserNameValueChange(it)
@@ -54,7 +54,7 @@ fun LogInScreenTheme(context: Context, navController: NavHostController, loginVi
                 Text(text = "Password ", color = LoginText, textAlign = TextAlign.Center)
             }
             Column(modifier = Modifier.padding(10.dp)){
-                TextField(
+                OutlinedTextField(
                     value = loginViewModel.password.value,
                     onValueChange = {
                         loginViewModel.onPasswordValueChange(it)

@@ -15,11 +15,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.navigation.NavHostController
 import coil.compose.rememberImagePainter
-import com.assignment.one.utils.NetworkStatus
+import com.assignment.one.networking.NetworkStatus
 import com.assignment.one.viewmodel.HomeScreenViewModel
 
 //Home Screen
@@ -49,10 +49,14 @@ fun HomeScreenTheme(homeScreenViewModel: HomeScreenViewModel){
                             contentScale = ContentScale.Fit)
 
                         Box(contentAlignment = Alignment.BottomCenter,
-                            modifier = Modifier.background(
-                                Brush.verticalGradient(colors = listOf(Color.Transparent,Color.DarkGray),
-                                    startY = 400f))) {
-                            Text(text = homeScreenViewModel.productListSate.value[index].productName, modifier = Modifier.padding(5.dp), color = Color.White)
+                            modifier = Modifier.background(Brush.verticalGradient(colors = listOf(Color.Transparent,Color.DarkGray),
+                                    startY = 400f))
+                        ) {
+                            Text(text = homeScreenViewModel.productListSate.value[index].productName,
+                                modifier = Modifier.padding(5.dp),
+                                color = Color.White,
+                                textAlign = TextAlign.Center
+                            )
                         }
                     }
                 }

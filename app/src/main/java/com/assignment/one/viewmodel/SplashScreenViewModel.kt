@@ -3,9 +3,7 @@ package com.assignment.one.viewmodel
 import android.content.Context
 import androidx.lifecycle.ViewModel
 import androidx.navigation.NavHostController
-import com.assignment.one.domain.repository.localRepository
-import com.assignment.one.local.loadData
-import com.assignment.one.domain.repository.remoteRepository
+import com.assignment.one.domain.repository.LocalRepository
 import com.assignment.one.utils.Screen
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.delay
@@ -16,7 +14,7 @@ class SplashScreenViewModel : ViewModel() {
     fun execute(scope: CoroutineScope, context: Context, navController: NavHostController){
         scope.launch {
             //Load user date from shared pref
-            val user = localRepository.loadUserData(context)
+            val user = LocalRepository.loadUserData(context)
 
             delay(2000)
 

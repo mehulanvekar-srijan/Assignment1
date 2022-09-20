@@ -7,9 +7,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.navigation.NavHostController
 import com.assignment.one.domain.model.User
-import com.assignment.one.domain.repository.localRepository
-import com.assignment.one.local.readFromAssets
-import com.assignment.one.local.saveData
+import com.assignment.one.domain.repository.LocalRepository
 import com.assignment.one.utils.Screen
 import com.google.gson.Gson
 
@@ -42,7 +40,7 @@ class LoginViewModel : ViewModel() {
     fun onClickButton(context: Context, navController: NavHostController){
         saveInputData() //STEP1: Save TextField data into incomingUser object
 
-        val userJson = localRepository.loadJsonUserData(context)
+        val userJson = LocalRepository.loadJsonUserData(context)
 
         convertToObject(userJson)   //Convert it to Kotlin object and save it in apiUser variable
 
@@ -50,7 +48,7 @@ class LoginViewModel : ViewModel() {
 
         if(status) { //User is valid
             _openDialog.value = false
-            localRepository.saveUserData(context, incomingUser.userName, incomingUser.password)
+            LocalRepository.saveUserData(context, incomingUser.userName, incomingUser.password)
             navigate(navController)
         }
         else _openDialog.value = true

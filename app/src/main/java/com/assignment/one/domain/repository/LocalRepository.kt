@@ -6,8 +6,6 @@ import com.assignment.one.local.loadData
 import com.assignment.one.local.readFromAssets
 import com.assignment.one.local.saveData
 
-val localRepository = LocalRepository
-
 object LocalRepository {
 
     fun saveUserData(context: Context, userName: String, password: String) = saveData(context,userName,password)

@@ -1,7 +1,7 @@
 package com.assignment.one.networking
 
 import com.assignment.one.domain.model.Product
-import com.assignment.one.domain.repository.remoteRepository
+import com.assignment.one.domain.repository.RemoteRepository
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -22,11 +22,11 @@ class HttpClient{
     fun getApiResponse(){
         retrofitData.enqueue(object : Callback<List<Product>?> {
             override fun onResponse(call: Call<List<Product>?>, response: Response<List<Product>?>){
-                remoteRepository.setProductList(response.body() ?: emptyList()) // List of products or Empty list
+                RemoteRepository.setProductList(response.body() ?: emptyList()) // List of products or Empty list
             }
 
             override fun onFailure(call: Call<List<Product>?>, t: Throwable) {
-                remoteRepository.setProductList(listOf()) //Empty immutable List
+                RemoteRepository.setProductList(listOf()) //Empty immutable List
             }
         })
     }
