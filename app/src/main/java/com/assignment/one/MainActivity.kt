@@ -10,23 +10,24 @@ import com.assignment.one.networking.HttpClient
 import com.assignment.one.utils.Navigation
 import com.assignment.one.viewmodel.LoginViewModel
 import com.assignment.one.viewmodel.SplashScreenViewModel
+import kotlinx.coroutines.CoroutineScope
 
 class MainActivity : ComponentActivity() {
 
-    val loginViewModel: LoginViewModel by viewModels()
-    val splashScreenViewModel: SplashScreenViewModel by viewModels()
-
-    lateinit var navController: NavHostController
+    private val loginViewModel: LoginViewModel by viewModels()
+    private val splashScreenViewModel: SplashScreenViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         //Call Navigation Controller which shows Splash() as first screen
         setContent{
-            navController = rememberNavController()
-            Navigation(navController = navController,context = this,loginViewModel,splashScreenViewModel)
+            Navigation(
+                navController = rememberNavController(),
+                context = this,
+                loginViewModel = loginViewModel,
+                splashScreenViewModel = splashScreenViewModel
+            )
         }
-
-        HttpClient().getApiResponse()
     }
 }

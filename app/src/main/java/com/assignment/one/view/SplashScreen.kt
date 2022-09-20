@@ -1,7 +1,6 @@
 package com.assignment.one.view
 
 import android.content.Context
-import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -15,11 +14,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
-import com.assignment.one.domain.repository.loadData
 import com.assignment.one.ui.theme.Typography
-import com.assignment.one.utils.Screen
 import com.assignment.one.viewmodel.SplashScreenViewModel
-import kotlinx.coroutines.delay
 
 //Splash Screen
 @Composable

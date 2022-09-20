@@ -1,13 +1,10 @@
 package com.assignment.one.viewmodel
 
 import android.content.Context
-import android.util.Log
-import androidx.compose.runtime.MutableState
-import androidx.compose.runtime.State
-import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.navigation.NavHostController
-import com.assignment.one.domain.repository.loadData
+import com.assignment.one.domain.repository.localRepository
+import com.assignment.one.local.loadData
 import com.assignment.one.domain.repository.remoteRepository
 import com.assignment.one.utils.Screen
 import kotlinx.coroutines.CoroutineScope
@@ -22,7 +19,10 @@ class SplashScreenViewModel : ViewModel() {
         scope.launch {
 
             //Load user date from shared pref
-            val user = loadData(context)
+            val user = localRepository.loadUserData(context)
+
+            //Ask Repo to fetch JSON data
+            remoteRepository.fetchFromServer()
 
             //Wait for 5 sec for the productList to get filled
             while(timer <= 5) {
@@ -54,4 +54,6 @@ class SplashScreenViewModel : ViewModel() {
             }
         }
     }
+
+
 }

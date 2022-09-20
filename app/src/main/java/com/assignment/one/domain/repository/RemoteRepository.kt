@@ -1,7 +1,7 @@
 package com.assignment.one.domain.repository
 
-import android.util.Log
 import com.assignment.one.domain.model.Product
+import com.assignment.one.networking.HttpClient
 
 val remoteRepository = RemoteRepository
 
@@ -15,5 +15,7 @@ object RemoteRepository {
 
     fun getProductList(): List<Product> = productList
     fun setProductList(list: List<Product>) { productList = list }
+
+    fun fetchFromServer() = HttpClient().getApiResponse()
 
 }
