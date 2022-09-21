@@ -2,6 +2,7 @@ package com.assignment.one.viewmodel
 
 import android.content.Context
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import androidx.navigation.NavHostController
 import com.assignment.one.domain.repository.LocalRepository
 import com.assignment.one.utils.Screen
@@ -12,7 +13,7 @@ import kotlinx.coroutines.launch
 class SplashScreenViewModel : ViewModel() {
 
     fun execute(scope: CoroutineScope, context: Context, navController: NavHostController){
-        scope.launch {
+        viewModelScope.launch {
             //Load user date from shared pref
             val user = LocalRepository.loadUserData(context)
 

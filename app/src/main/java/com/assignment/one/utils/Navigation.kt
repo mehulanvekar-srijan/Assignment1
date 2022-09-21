@@ -31,7 +31,7 @@ fun Navigation(
         startDestination = Screen.MainScreen.route
     ){
         composable(route = Screen.MainScreen.route){ Splash("Mehul",context,navController,splashScreenViewModel) }
-        composable(route = Screen.LogInScreen.route){ LogInScreenTheme(context = context, navController = navController,loginViewModel = loginViewModel) }
+        composable(route = Screen.LogInScreen.route){ LogInScreenTheme(context,navController,loginViewModel) }
         composable(route = Screen.HomeScreen.route){ HomeScreenTheme(homeScreenViewModel) }
     }
 }

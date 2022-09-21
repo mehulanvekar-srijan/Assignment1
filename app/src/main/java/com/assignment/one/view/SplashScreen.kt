@@ -2,6 +2,7 @@ package com.assignment.one.view
 
 import android.content.Context
 import android.util.Log
+import androidx.activity.viewModels
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
