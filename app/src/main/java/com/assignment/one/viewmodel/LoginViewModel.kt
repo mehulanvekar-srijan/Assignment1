@@ -25,6 +25,9 @@ class LoginViewModel : ViewModel() {
     private val _password: MutableState<String> = mutableStateOf("")
     val password : State<String> = _password
 
+    private val _passwordVisibility: MutableState<Boolean> = mutableStateOf(false)
+    val passwordVisibility : State<Boolean> = _passwordVisibility
+
     fun onUserNameValueChange(input: String){
         _userNameState.value = input
     }
@@ -35,6 +38,10 @@ class LoginViewModel : ViewModel() {
 
     fun onDialogResponseChange(input: Boolean){
         _openDialog.value = input
+    }
+
+    fun onPasswordVisibilityChange(){
+        _passwordVisibility.value = !_passwordVisibility.value
     }
 
     fun onClickButton(context: Context, navController: NavHostController){

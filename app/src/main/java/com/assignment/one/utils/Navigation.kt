@@ -5,6 +5,8 @@ import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import com.assignment.one.ui.theme.Assignment1Theme
+import com.assignment.one.ui.theme.NoStatusBarTheme
 import com.assignment.one.view.HomeScreenTheme
 import com.assignment.one.view.LogInScreenTheme
 import com.assignment.one.view.Splash
@@ -30,8 +32,20 @@ fun Navigation(
         navController = navController,
         startDestination = Screen.MainScreen.route
     ){
-        composable(route = Screen.MainScreen.route){ Splash("Mehul",context,navController,splashScreenViewModel) }
-        composable(route = Screen.LogInScreen.route){ LogInScreenTheme(context,navController,loginViewModel) }
-        composable(route = Screen.HomeScreen.route){ HomeScreenTheme(homeScreenViewModel) }
+        composable(route = Screen.MainScreen.route){
+            Assignment1Theme{
+                Splash("Mehul",context,navController,splashScreenViewModel)
+            }
+        }
+        composable(route = Screen.LogInScreen.route){
+            NoStatusBarTheme{
+                LogInScreenTheme(context,navController,loginViewModel)
+            }
+        }
+        composable(route = Screen.HomeScreen.route){
+            NoStatusBarTheme{
+                HomeScreenTheme(homeScreenViewModel)
+            }
+        }
     }
 }

@@ -12,7 +12,7 @@ import kotlinx.coroutines.launch
 
 class SplashScreenViewModel : ViewModel() {
 
-    fun execute(scope: CoroutineScope, context: Context, navController: NavHostController){
+    fun execute(context: Context, navController: NavHostController){
         viewModelScope.launch {
             //Load user date from shared pref
             val user = LocalRepository.loadUserData(context)

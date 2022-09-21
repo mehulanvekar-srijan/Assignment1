@@ -27,7 +27,7 @@ import com.assignment.one.viewmodel.HomeScreenViewModel
 @Composable
 fun HomeScreenTheme(homeScreenViewModel: HomeScreenViewModel){
 
-    homeScreenViewModel.execute(rememberCoroutineScope())
+    homeScreenViewModel.execute()
 
     Box(modifier = Modifier.fillMaxSize(),
         contentAlignment = Alignment.Center

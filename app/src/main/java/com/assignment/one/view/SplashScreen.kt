@@ -37,5 +37,5 @@ fun Splash(text: String = "Android-Default",
         Text(text = text, color = SplashScreenText, style = Typography.h5)
     }
     Log.d("", "Splash")
-    splashScreenViewModel.execute(rememberCoroutineScope(),context,navController)
+    splashScreenViewModel.execute(context,navController)
 }
