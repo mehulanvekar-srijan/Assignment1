@@ -37,7 +37,9 @@ class HomeScreenViewModel : ViewModel() {
                     break
                 }
             }
-            if(_productListSate.value.isEmpty()) _networkStatusState.value = NetworkStatus.Failed
+            if(_productListSate.value.isEmpty()) {
+                _networkStatusState.value = NetworkStatus.Failed
+            }
         }
     }
 }

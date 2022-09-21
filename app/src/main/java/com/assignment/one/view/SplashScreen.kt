@@ -1,6 +1,7 @@
 package com.assignment.one.view
 
 import android.content.Context
+import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -33,11 +34,7 @@ fun Splash(text: String = "Android-Default",
         verticalArrangement = Arrangement.Center
     ) {
         Text(text = text, color = SplashScreenText, style = Typography.h5)
-        CircularProgressIndicator(
-            modifier = Modifier.padding(50.dp),
-            color = SplashScreenIndicator
-        )
     }
-
+    Log.d("", "Splash")
     splashScreenViewModel.execute(rememberCoroutineScope(),context,navController)
 }
