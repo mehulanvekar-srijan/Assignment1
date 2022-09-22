@@ -21,26 +21,7 @@ class HomeScreenViewModel : ViewModel() {
     val networkStatusState: State<NetworkStatus> = _networkStatusState
 
     fun execute(){
-
-        RemoteRepository.fetchFromServer() //Fetch JSON data
-
-        viewModelScope.launch {
-            var sec = 5
-            while(sec >= 1){
-                sec--
-                delay(1000)
-                _productListSate.value = RemoteRepository.getProductList()
-
-                if(_productListSate.value.isEmpty()) continue
-
-                else {
-                    _networkStatusState.value = NetworkStatus.Success
-                    break
-                }
-            }
-            if(_productListSate.value.isEmpty()) {
-                _networkStatusState.value = NetworkStatus.Failed
-            }
-        }
+        //Pass State objects to Repo so that it can edit it whenever the response has arrived
+        RemoteRepository.fetchFromServer(_productListSate,_networkStatusState)
     }
 }
