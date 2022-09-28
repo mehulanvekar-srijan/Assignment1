@@ -1,12 +1,9 @@
 package com.assignment.one.utils
 
-import android.content.Context
 import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import com.assignment.one.ui.theme.Assignment1Theme
-import com.assignment.one.ui.theme.NoStatusBarTheme
 import com.assignment.one.view.HomeScreenTheme
 import com.assignment.one.view.LogInScreenTheme
 import com.assignment.one.view.Splash
@@ -23,29 +20,23 @@ sealed class Screen(val route:String){
 @Composable
 fun Navigation(
     navController: NavHostController,
-    context: Context,
-    loginViewModel: LoginViewModel,
-    splashScreenViewModel: SplashScreenViewModel,
-    homeScreenViewModel: HomeScreenViewModel
+    navHostControllerLambda : () -> NavHostController,
+    splashScreenViewModelLambda : () -> SplashScreenViewModel,
+    loginViewModelLambda : () -> LoginViewModel,
+    homeScreenViewModelLambda : () -> HomeScreenViewModel
 ) {
     NavHost(
         navController = navController,
         startDestination = Screen.MainScreen.route
     ){
         composable(route = Screen.MainScreen.route){
-            Assignment1Theme{
-                Splash("Mehul",context,navController,splashScreenViewModel)
-            }
+            Splash("Mehul",navHostControllerLambda,splashScreenViewModelLambda)
         }
         composable(route = Screen.LogInScreen.route){
-            NoStatusBarTheme{
-                LogInScreenTheme(context,navController,loginViewModel)
-            }
+            LogInScreenTheme(navHostControllerLambda,loginViewModelLambda)
         }
         composable(route = Screen.HomeScreen.route){
-            NoStatusBarTheme{
-                HomeScreenTheme(homeScreenViewModel)
-            }
+            HomeScreenTheme(homeScreenViewModelLambda)
         }
     }
 }

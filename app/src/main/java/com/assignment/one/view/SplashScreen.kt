@@ -2,19 +2,14 @@ package com.assignment.one.view
 
 import android.content.Context
 import android.util.Log
-import androidx.activity.viewModels
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
-import androidx.compose.material.CircularProgressIndicator
+import androidx.compose.foundation.layout.*
 import androidx.compose.material.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.unit.dp
+import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.get
 import androidx.navigation.NavHostController
 import com.assignment.one.ui.theme.*
 import com.assignment.one.ui.theme.Typography
@@ -22,11 +17,22 @@ import com.assignment.one.viewmodel.SplashScreenViewModel
 
 //Splash Screen
 @Composable
-fun Splash(text: String = "Android-Default",
-           context: Context,
-           navController: NavHostController,
-           splashScreenViewModel: SplashScreenViewModel
+fun Splash(text: String,
+           navHostControllerLambda : () -> NavHostController,
+           splashScreenViewModelLambda : () -> SplashScreenViewModel
 ) {
+
+    Log.d("textMX", "Splash: compose")
+
+    DrawBackground(text)
+
+    LaunchedEffect(key1 = true){
+        splashScreenViewModelLambda().execute(navHostControllerLambda())
+    }
+}
+
+@Composable
+fun DrawBackground(text: String,) {
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -34,8 +40,11 @@ fun Splash(text: String = "Android-Default",
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center
     ) {
-        Text(text = text, color = SplashScreenText, style = Typography.h5)
+        DrawName(text)
     }
-    Log.d("", "Splash")
-    splashScreenViewModel.execute(context,navController)
+}
+
+@Composable
+fun DrawName(text: String) {
+    Text(text = text, color = SplashScreenText, style = Typography.h5)
 }

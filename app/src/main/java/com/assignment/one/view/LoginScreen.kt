@@ -7,27 +7,28 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Call
-import androidx.compose.material.icons.filled.Check
-import androidx.compose.material.icons.filled.Lock
-import androidx.compose.material.icons.rounded.Close
 import androidx.compose.material.icons.rounded.Lock
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
-import com.assignment.one.R
 import com.assignment.one.viewmodel.LoginViewModel
 import com.assignment.one.ui.theme.*
 
 @Composable
-fun LogInScreenTheme(context: Context, navController: NavHostController, loginViewModel: LoginViewModel) {
+fun LogInScreenTheme(
+    navHostControllerLambda : () -> NavHostController,
+    loginViewModelLambda : () -> LoginViewModel,
+) {
+
+//    val loginViewModel = remember{ LoginViewModel() }
+
+    Log.d("textMX", "LogInScreen: compose")
 
     Column(verticalArrangement = Arrangement.Center,
         modifier = Modifier
@@ -35,18 +36,17 @@ fun LogInScreenTheme(context: Context, navController: NavHostController, loginVi
             .background(LoginBackground),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-
         //User Name
-        DrawUserName(loginViewModel = loginViewModel)
+        DrawUserName(loginViewModel = loginViewModelLambda())
 
         //Password
-        DrawPassword(loginViewModel = loginViewModel)
+        DrawPassword(loginViewModel = loginViewModelLambda())
 
         //LetsGo Button
-        LetsGoButton(context,navController,loginViewModel)
+        LetsGoButton(navHostControllerLambda(),loginViewModelLambda())
 
-        if(loginViewModel.openDialog.value){
-            DrawAlertDialog(loginViewModel = loginViewModel)
+        if(loginViewModelLambda().openDialog.value){
+            DrawAlertDialog(loginViewModel = loginViewModelLambda())
         }
     }
 }
@@ -66,7 +66,7 @@ fun DrawUserName(loginViewModel: LoginViewModel) {
                 onValueChange = {
                     loginViewModel.onUserNameValueChange(it)
                 },
-                label = { Text(text = "Enter user name") }
+                label = { Text(text = "Enter user name") },
             )
         }
     }
@@ -103,9 +103,9 @@ fun DrawPassword(loginViewModel: LoginViewModel) {
 }
 
 @Composable
-fun LetsGoButton(context: Context, navController: NavHostController, loginViewModel: LoginViewModel) {
+fun LetsGoButton(navController: NavHostController, loginViewModel: LoginViewModel) {
     Button(
-        onClick = { loginViewModel.onClickButton(context,navController) },
+        onClick = { loginViewModel.onClickButton(navController) },
         shape = RoundedCornerShape(50),
         modifier = Modifier
             .fillMaxWidth(0.5F)

@@ -1,5 +1,6 @@
 package com.assignment.one.view
 
+import android.util.Log
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -9,25 +10,35 @@ import androidx.compose.foundation.lazy.LazyVerticalGrid
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.SideEffect
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.rememberImagePainter
 import com.assignment.one.networking.NetworkStatus
+import com.assignment.one.ui.theme.*
 import com.assignment.one.viewmodel.HomeScreenViewModel
 
 //Home Screen
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
-fun HomeScreenTheme(homeScreenViewModel: HomeScreenViewModel){
+fun HomeScreenTheme(homeScreenViewModelLambda : () -> HomeScreenViewModel){
 
-    homeScreenViewModel.execute()
+//    val homeScreenViewModel = remember { HomeScreenViewModel() }
+
+    Log.d("textMX", "HomeScreen: compose")
+
+    LaunchedEffect(key1 = true){
+        homeScreenViewModelLambda().execute()
+    }
 
     Box(modifier = Modifier.fillMaxSize(),
         contentAlignment = Alignment.Center
@@ -36,33 +47,38 @@ fun HomeScreenTheme(homeScreenViewModel: HomeScreenViewModel){
             cells = GridCells.Fixed(2),
             modifier = Modifier.background(Color.White),
             content = {
-                items(homeScreenViewModel.productListSate.value.size){ index ->
+                items(homeScreenViewModelLambda().productListSate.value.size){ index ->
                     Card(modifier = Modifier
                         .fillMaxWidth()
                         .height(250.dp)
                         .padding(5.dp),
-                        elevation = 10.dp,
-                        shape = RoundedCornerShape(8.dp),
+                        elevation = 19.dp,
+                        shape = RoundedCornerShape(5.dp),
                     ) {
-                        Image(painter = rememberImagePainter(homeScreenViewModel.productListSate.value[index].imageUrl),
+                        Image(painter = rememberImagePainter(homeScreenViewModelLambda().productListSate.value[index].imageUrl),
                             contentDescription = "",
                             contentScale = ContentScale.Fit)
 
-                        Box(contentAlignment = Alignment.BottomCenter,
-                            modifier = Modifier.background(Brush.verticalGradient(colors = listOf(Color.Transparent,Color.DarkGray),
-                                    startY = 400f))
+                        Box( modifier = Modifier.padding(0.dp),
+                            contentAlignment = Alignment.BottomCenter,
                         ) {
-                            Text(text = homeScreenViewModel.productListSate.value[index].productName,
-                                modifier = Modifier.padding(5.dp),
+                            Text(text = homeScreenViewModelLambda().productListSate.value[index].productName,
+                                textAlign = TextAlign.Center,
+                                modifier = Modifier
+                                    .fillMaxHeight(0.2F)
+                                    .fillMaxWidth()
+                                    .background(brush = Brush.verticalGradient(colors = listOf(NavyBlazer,Inkwell)))
+                                    .padding(3.dp),
                                 color = Color.White,
-                                textAlign = TextAlign.Center
+                                maxLines = 2,
+                                overflow = TextOverflow.Ellipsis,
                             )
                         }
                     }
                 }
             }
         )
-        if(homeScreenViewModel.networkStatusState.value == NetworkStatus.Fetching) {
+        if(homeScreenViewModelLambda().networkStatusState.value == NetworkStatus.Fetching) {
             Column(
                 horizontalAlignment = Alignment.CenterHorizontally,
                 verticalArrangement = Arrangement.Center
@@ -71,7 +87,7 @@ fun HomeScreenTheme(homeScreenViewModel: HomeScreenViewModel){
                 Text(text = "Fetching..")
             }
         }
-        if(homeScreenViewModel.networkStatusState.value == NetworkStatus.Failed) {
+        if(homeScreenViewModelLambda().networkStatusState.value == NetworkStatus.Failed) {
             Column(
                 horizontalAlignment = Alignment.CenterHorizontally,
                 verticalArrangement = Arrangement.Center
@@ -80,6 +96,4 @@ fun HomeScreenTheme(homeScreenViewModel: HomeScreenViewModel){
             }
         }
     }
-
-
 }

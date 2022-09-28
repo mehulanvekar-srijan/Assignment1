@@ -64,7 +64,21 @@ dependencies {
     implementation 'com.google.code.gson:gson:2.9.1'
 
     //Navigation
-    implementation "androidx.navigation:navigation-compose:2.4.0-alpha01"
+    //implementation "androidx.navigation:navigation-compose:2.4.0-alpha01"   // worked fine
+    //implementation "androidx.navigation:navigation-compose:2.4.0-alpha02"  // worked fine
+    //implementation "androidx.navigation:navigation-compose:2.4.0-alpha05" // App crashed
+
+//    implementation "androidx.navigation:navigation-compose:2.4.0-alpha08"  // causes problem (worst)
+    //implementation "androidx.navigation:navigation-compose:2.4.0-alpha09" // same issue (worst)
+    //implementation "androidx.navigation:navigation-compose:2.4.0-alpha10"  // same issue
+    //implementation "androidx.navigation:navigation-compose:2.4.0"       // same issue
+
+    //implementation "androidx.navigation:navigation-compose:2.5.0" // same issue
+    //implementation "androidx.navigation:navigation-compose:2.5.0-rc02" // same issue
+    //implementation "androidx.navigation:navigation-compose:2.5.0-beta01" // same issue
+    implementation "androidx.navigation:navigation-compose:2.5.2" // same issue [Recent stable release]
+
+    //implementation "androidx.navigation:navigation-compose:2.6.0-alpha01" // Got SDK error
 
     //RetroFit
     implementation 'com.squareup.retrofit2:retrofit:2.7.1'

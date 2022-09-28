@@ -44,10 +44,10 @@ class LoginViewModel : ViewModel() {
         _passwordVisibility.value = !_passwordVisibility.value
     }
 
-    fun onClickButton(context: Context, navController: NavHostController){
+    fun onClickButton(navController: NavHostController){
         saveInputData() //STEP1: Save TextField data into incomingUser object
 
-        val userJson = LocalRepository.loadJsonUserData(context)
+        val userJson = LocalRepository.loadJsonUserData(navController.context)
 
         convertToObject(userJson)   //Convert it to Kotlin object and save it in apiUser variable
 
@@ -55,7 +55,7 @@ class LoginViewModel : ViewModel() {
 
         if(status) { //User is valid
             _openDialog.value = false
-            LocalRepository.saveUserData(context, incomingUser.userName, incomingUser.password)
+            LocalRepository.saveUserData(navController.context, incomingUser.userName, incomingUser.password)
             navigate(navController)
         }
         else _openDialog.value = true
