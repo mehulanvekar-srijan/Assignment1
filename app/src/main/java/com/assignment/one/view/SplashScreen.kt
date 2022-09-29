@@ -10,6 +10,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.get
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import com.assignment.one.ui.theme.*
 import com.assignment.one.ui.theme.Typography
@@ -19,7 +20,7 @@ import com.assignment.one.viewmodel.SplashScreenViewModel
 @Composable
 fun Splash(text: String,
            navHostControllerLambda : () -> NavHostController,
-           splashScreenViewModelLambda : () -> SplashScreenViewModel
+           splashScreenViewModel: SplashScreenViewModel = viewModel()
 ) {
 
     Log.d("textMX", "Splash: compose")
@@ -27,7 +28,7 @@ fun Splash(text: String,
     DrawBackground(text)
 
     LaunchedEffect(key1 = true){
-        splashScreenViewModelLambda().execute(navHostControllerLambda())
+        splashScreenViewModel.execute(navHostControllerLambda())
     }
 }
 

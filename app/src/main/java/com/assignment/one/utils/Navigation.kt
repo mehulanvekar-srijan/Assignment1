@@ -1,9 +1,11 @@
 package com.assignment.one.utils
 
+import android.util.Log
 import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import androidx.navigation.compose.rememberNavController
 import com.assignment.one.view.HomeScreenTheme
 import com.assignment.one.view.LogInScreenTheme
 import com.assignment.one.view.Splash
@@ -18,25 +20,23 @@ sealed class Screen(val route:String){
 }
 
 @Composable
-fun Navigation(
-    navController: NavHostController,
-    navHostControllerLambda : () -> NavHostController,
-    splashScreenViewModelLambda : () -> SplashScreenViewModel,
-    loginViewModelLambda : () -> LoginViewModel,
-    homeScreenViewModelLambda : () -> HomeScreenViewModel
-) {
+fun Navigation() {
+
+    val navHostController = rememberNavController() // actual navHostController object
+    val navHostControllerLambda : () -> NavHostController = { navHostController } // func that returns navHostController object
+
     NavHost(
-        navController = navController,
+        navController = navHostController,
         startDestination = Screen.MainScreen.route
     ){
         composable(route = Screen.MainScreen.route){
-            Splash("Mehul",navHostControllerLambda,splashScreenViewModelLambda)
+            Splash("Mehul",navHostControllerLambda)
         }
         composable(route = Screen.LogInScreen.route){
-            LogInScreenTheme(navHostControllerLambda,loginViewModelLambda)
+            LogInScreenTheme(navHostControllerLambda)
         }
         composable(route = Screen.HomeScreen.route){
-            HomeScreenTheme(homeScreenViewModelLambda)
+            HomeScreenTheme()
         }
     }
 }

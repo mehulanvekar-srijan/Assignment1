@@ -22,6 +22,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import coil.compose.rememberImagePainter
 import com.assignment.one.networking.NetworkStatus
 import com.assignment.one.ui.theme.*
@@ -30,14 +31,14 @@ import com.assignment.one.viewmodel.HomeScreenViewModel
 //Home Screen
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
-fun HomeScreenTheme(homeScreenViewModelLambda : () -> HomeScreenViewModel){
+fun HomeScreenTheme(homeScreenViewModel: HomeScreenViewModel = viewModel()){
 
 //    val homeScreenViewModel = remember { HomeScreenViewModel() }
 
     Log.d("textMX", "HomeScreen: compose")
 
     LaunchedEffect(key1 = true){
-        homeScreenViewModelLambda().execute()
+        homeScreenViewModel.execute()
     }
 
     Box(modifier = Modifier.fillMaxSize(),
@@ -47,7 +48,7 @@ fun HomeScreenTheme(homeScreenViewModelLambda : () -> HomeScreenViewModel){
             cells = GridCells.Fixed(2),
             modifier = Modifier.background(Color.White),
             content = {
-                items(homeScreenViewModelLambda().productListSate.value.size){ index ->
+                items(homeScreenViewModel.productListSate.value.size){ index ->
                     Card(modifier = Modifier
                         .fillMaxWidth()
                         .height(250.dp)
@@ -55,19 +56,26 @@ fun HomeScreenTheme(homeScreenViewModelLambda : () -> HomeScreenViewModel){
                         elevation = 19.dp,
                         shape = RoundedCornerShape(5.dp),
                     ) {
-                        Image(painter = rememberImagePainter(homeScreenViewModelLambda().productListSate.value[index].imageUrl),
+                        Image(painter = rememberImagePainter(homeScreenViewModel.productListSate.value[index].imageUrl),
                             contentDescription = "",
                             contentScale = ContentScale.Fit)
 
                         Box( modifier = Modifier.padding(0.dp),
                             contentAlignment = Alignment.BottomCenter,
                         ) {
-                            Text(text = homeScreenViewModelLambda().productListSate.value[index].productName,
+                            Text(text = homeScreenViewModel.productListSate.value[index].productName,
                                 textAlign = TextAlign.Center,
                                 modifier = Modifier
                                     .fillMaxHeight(0.2F)
                                     .fillMaxWidth()
-                                    .background(brush = Brush.verticalGradient(colors = listOf(NavyBlazer,Inkwell)))
+                                    .background(
+                                        brush = Brush.verticalGradient(
+                                            colors = listOf(
+                                                NavyBlazer,
+                                                Inkwell
+                                            )
+                                        )
+                                    )
                                     .padding(3.dp),
                                 color = Color.White,
                                 maxLines = 2,
@@ -78,7 +86,7 @@ fun HomeScreenTheme(homeScreenViewModelLambda : () -> HomeScreenViewModel){
                 }
             }
         )
-        if(homeScreenViewModelLambda().networkStatusState.value == NetworkStatus.Fetching) {
+        if(homeScreenViewModel.networkStatusState.value == NetworkStatus.Fetching) {
             Column(
                 horizontalAlignment = Alignment.CenterHorizontally,
                 verticalArrangement = Arrangement.Center
@@ -87,7 +95,7 @@ fun HomeScreenTheme(homeScreenViewModelLambda : () -> HomeScreenViewModel){
                 Text(text = "Fetching..")
             }
         }
-        if(homeScreenViewModelLambda().networkStatusState.value == NetworkStatus.Failed) {
+        if(homeScreenViewModel.networkStatusState.value == NetworkStatus.Failed) {
             Column(
                 horizontalAlignment = Alignment.CenterHorizontally,
                 verticalArrangement = Arrangement.Center

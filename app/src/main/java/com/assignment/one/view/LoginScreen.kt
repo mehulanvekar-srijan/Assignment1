@@ -16,6 +16,7 @@ import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import com.assignment.one.viewmodel.LoginViewModel
 import com.assignment.one.ui.theme.*
@@ -23,7 +24,7 @@ import com.assignment.one.ui.theme.*
 @Composable
 fun LogInScreenTheme(
     navHostControllerLambda : () -> NavHostController,
-    loginViewModelLambda : () -> LoginViewModel,
+    loginViewModel: LoginViewModel = viewModel(),
 ) {
 
 //    val loginViewModel = remember{ LoginViewModel() }
@@ -37,16 +38,16 @@ fun LogInScreenTheme(
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         //User Name
-        DrawUserName(loginViewModel = loginViewModelLambda())
+        DrawUserName(loginViewModel = loginViewModel)
 
         //Password
-        DrawPassword(loginViewModel = loginViewModelLambda())
+        DrawPassword(loginViewModel = loginViewModel)
 
         //LetsGo Button
-        LetsGoButton(navHostControllerLambda(),loginViewModelLambda())
+        LetsGoButton(navHostControllerLambda(),loginViewModel)
 
-        if(loginViewModelLambda().openDialog.value){
-            DrawAlertDialog(loginViewModel = loginViewModelLambda())
+        if(loginViewModel.openDialog.value){
+            DrawAlertDialog(loginViewModel = loginViewModel)
         }
     }
 }
