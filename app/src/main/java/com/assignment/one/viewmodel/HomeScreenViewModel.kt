@@ -22,5 +22,6 @@ class HomeScreenViewModel : ViewModel() {
     fun execute(){
         //Pass Mutable State object to repository
         RemoteRepository.fetchFromServer(_productListSate,_networkStatusState)
+
     }
 }
