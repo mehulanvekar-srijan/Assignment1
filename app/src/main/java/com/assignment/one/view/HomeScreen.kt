@@ -11,9 +11,6 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.SideEffect
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
@@ -37,7 +34,7 @@ fun HomeScreenTheme(homeScreenViewModel: HomeScreenViewModel = viewModel()){
     Log.d("textMX", "HomeScreen: compose")
 
     LaunchedEffect(key1 = true){
-        homeScreenViewModel.execute()
+        if(homeScreenViewModel.productListSate.value.isEmpty()) homeScreenViewModel.execute()
     }
 
     if(homeScreenViewModel.networkStatusState.value == NetworkStatus.Fetching) {

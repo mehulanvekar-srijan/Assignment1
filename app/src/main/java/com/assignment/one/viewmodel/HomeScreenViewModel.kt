@@ -7,6 +7,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.assignment.one.domain.model.Product
 import com.assignment.one.domain.repository.RemoteRepository
+import com.assignment.one.networking.NetResponse
 import com.assignment.one.networking.NetworkStatus
 import kotlinx.coroutines.Deferred
 import kotlinx.coroutines.Dispatchers
@@ -22,11 +23,25 @@ class HomeScreenViewModel : ViewModel() {
 
     suspend fun execute(){
 
-        val deferred : Deferred<List<Product>> = viewModelScope.async(Dispatchers.IO) {
+        //Asynchronously connect to RemoteRepository for NetResponse object
+        val deferred : Deferred<NetResponse> = viewModelScope.async(Dispatchers.IO) {
             RemoteRepository.fetchFromServer()
         }
 
-        _productListSate.value = deferred.await()
-        _networkStatusState.value = NetworkStatus.Success
+        //change state based on type of NetResponse object
+        when(val netResponse = deferred.await()){
+            is NetResponse.Success -> {
+                _productListSate.value = netResponse.list
+                _networkStatusState.value = NetworkStatus.Success
+            }
+            is NetResponse.Failed -> {
+                _productListSate.value = netResponse.list
+                _networkStatusState.value = NetworkStatus.Failed
+            }
+            is NetResponse.Fetching -> {
+                _networkStatusState.value = NetworkStatus.Fetching
+            }
+        }
+
     }
 }

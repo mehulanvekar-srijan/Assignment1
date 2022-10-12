@@ -1,17 +1,14 @@
 package com.assignment.one.domain.repository
 
-import androidx.compose.runtime.MutableState
-import com.assignment.one.domain.model.Product
 import com.assignment.one.networking.HttpClient
-import com.assignment.one.networking.NetworkStatus
+import com.assignment.one.networking.NetResponse
 
 /*
 * RemoteRepository stores data fetched from API
 * other classes/functions should access this object inorder to access productList
 */
 object RemoteRepository {
-
-    fun fetchFromServer(): List<Product> {
+    fun fetchFromServer(): NetResponse {
         return HttpClient().getApiResponse()
     }
 }
