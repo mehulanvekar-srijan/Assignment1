@@ -9,6 +9,7 @@ import com.assignment.one.domain.model.Product
 import com.assignment.one.domain.repository.RemoteRepository
 import com.assignment.one.networking.NetworkStatus
 import kotlinx.coroutines.Deferred
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
 
 class HomeScreenViewModel : ViewModel() {
@@ -19,9 +20,13 @@ class HomeScreenViewModel : ViewModel() {
     private val _networkStatusState: MutableState<NetworkStatus> = mutableStateOf(NetworkStatus.Fetching)
     val networkStatusState: State<NetworkStatus> = _networkStatusState
 
-    fun execute(){
-        //Pass Mutable State object to repository
-        RemoteRepository.fetchFromServer(_productListSate,_networkStatusState)
+    suspend fun execute(){
 
+        val deferred : Deferred<List<Product>> = viewModelScope.async(Dispatchers.IO) {
+            RemoteRepository.fetchFromServer()
+        }
+
+        _productListSate.value = deferred.await()
+        _networkStatusState.value = NetworkStatus.Success
     }
 }

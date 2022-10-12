@@ -11,8 +11,7 @@ import com.assignment.one.networking.NetworkStatus
 */
 object RemoteRepository {
 
-    //Job is to only make a call to Retrofit client
-    fun fetchFromServer(productList: MutableState<List<Product>>, networkState: MutableState<NetworkStatus>) {
-        HttpClient().getApiResponse(productList,networkState)
+    fun fetchFromServer(): List<Product> {
+        return HttpClient().getApiResponse()
     }
 }
