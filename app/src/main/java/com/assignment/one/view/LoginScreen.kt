@@ -1,6 +1,5 @@
 package com.assignment.one.view
 
-import android.content.Context
 import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
@@ -30,6 +29,7 @@ fun LogInScreenTheme(
 //    val loginViewModel = remember{ LoginViewModel() }
 
     Log.d("textMX", "LogInScreen: compose")
+    Log.d("testPerf", "LogInScreen: compose")
 
     Column(verticalArrangement = Arrangement.Center,
         modifier = Modifier
@@ -54,6 +54,7 @@ fun LogInScreenTheme(
 
 @Composable
 fun DrawUserName(loginViewModel: LoginViewModel) {
+    Log.d("testPerf", "DrawUserName: called")
     Row(modifier = Modifier,
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.Center
@@ -75,6 +76,7 @@ fun DrawUserName(loginViewModel: LoginViewModel) {
 
 @Composable
 fun DrawPassword(loginViewModel: LoginViewModel) {
+    Log.d("testPerf", "DrawPassword: called")
     Row(modifier = Modifier,
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.Center

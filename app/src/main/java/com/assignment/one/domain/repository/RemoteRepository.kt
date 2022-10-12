@@ -15,5 +15,4 @@ object RemoteRepository {
     fun fetchFromServer(productList: MutableState<List<Product>>, networkState: MutableState<NetworkStatus>) {
         HttpClient().getApiResponse(productList,networkState)
     }
-
 }

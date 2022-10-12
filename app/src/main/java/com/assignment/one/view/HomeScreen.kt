@@ -13,6 +13,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
@@ -33,20 +34,28 @@ import com.assignment.one.viewmodel.HomeScreenViewModel
 @Composable
 fun HomeScreenTheme(homeScreenViewModel: HomeScreenViewModel = viewModel()){
 
-//    val homeScreenViewModel = remember { HomeScreenViewModel() }
-
     Log.d("textMX", "HomeScreen: compose")
 
     LaunchedEffect(key1 = true){
         homeScreenViewModel.execute()
     }
 
-    Box(modifier = Modifier.fillMaxSize(),
-        contentAlignment = Alignment.Center
-    ) {
+    if(homeScreenViewModel.networkStatusState.value == NetworkStatus.Fetching) {
+        Column(
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.Center,
+            modifier = Modifier.fillMaxSize()
+        ) {
+            CircularProgressIndicator()
+            Text(text = "Fetching..")
+        }
+    }
+    if(homeScreenViewModel.networkStatusState.value == NetworkStatus.Success){
         LazyVerticalGrid(
             cells = GridCells.Fixed(2),
-            modifier = Modifier.background(Color.White),
+            modifier = Modifier
+                .background(Color.White)
+                .fillMaxSize(),
             content = {
                 items(homeScreenViewModel.productListSate.value.size){ index ->
                     Card(modifier = Modifier
@@ -86,22 +95,15 @@ fun HomeScreenTheme(homeScreenViewModel: HomeScreenViewModel = viewModel()){
                 }
             }
         )
-        if(homeScreenViewModel.networkStatusState.value == NetworkStatus.Fetching) {
-            Column(
-                horizontalAlignment = Alignment.CenterHorizontally,
-                verticalArrangement = Arrangement.Center
-            ) {
-                CircularProgressIndicator()
-                Text(text = "Fetching..")
-            }
-        }
-        if(homeScreenViewModel.networkStatusState.value == NetworkStatus.Failed) {
-            Column(
-                horizontalAlignment = Alignment.CenterHorizontally,
-                verticalArrangement = Arrangement.Center
-            ) {
-                Text(text = "Failed..", color = Color.Red, fontSize = 30.sp)
-            }
+    }
+    if(homeScreenViewModel.networkStatusState.value == NetworkStatus.Failed) {
+        Column(
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.Center,
+            modifier = Modifier.fillMaxSize()
+        ) {
+            Text(text = "Failed..", color = Color.Red, fontSize = 30.sp)
         }
     }
 }
+

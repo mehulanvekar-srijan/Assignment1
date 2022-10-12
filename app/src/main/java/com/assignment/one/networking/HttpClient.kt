@@ -4,13 +4,14 @@ import android.util.Log
 import androidx.compose.runtime.MutableState
 import com.assignment.one.domain.model.Product
 import com.assignment.one.domain.repository.RemoteRepository
+import com.assignment.one.viewmodel.HomeScreenViewModel
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
-val BASE_API_STORE_URL: String = "https://fakestoreapi.com/"
+const val BASE_API_STORE_URL: String = "https://fakestoreapi.com/"
 
 class HttpClient{
 
@@ -24,6 +25,8 @@ class HttpClient{
 
     //Fill data inside productList present in RemoteRepository, on failure fill empty list
     fun getApiResponse(productList: MutableState<List<Product>>,networkState: MutableState<NetworkStatus>){
+        Log.d("MehulX", "getApiResponse: MS")
+
         retrofitData.enqueue(object : Callback<List<Product>?> {
             override fun onResponse(call: Call<List<Product>?>, response: Response<List<Product>?>){
                 productList.value = response.body() ?: emptyList()
@@ -37,6 +40,6 @@ class HttpClient{
                 Log.d("MehulX", "onFailure: ${t.message}")
             }
         })
-    }
 
+    }
 }
