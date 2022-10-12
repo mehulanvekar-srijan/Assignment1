@@ -23,23 +23,9 @@ class HttpClient{
 
     private val retrofitData = retrofitBuilder.getProductData()
 
-    //Fill data inside productList present in RemoteRepository, on failure fill empty list
-    fun getApiResponse(productList: MutableState<List<Product>>,networkState: MutableState<NetworkStatus>){
-        Log.d("MehulX", "getApiResponse: MS")
-
-        retrofitData.enqueue(object : Callback<List<Product>?> {
-            override fun onResponse(call: Call<List<Product>?>, response: Response<List<Product>?>){
-                productList.value = response.body() ?: emptyList()
-                networkState.value = NetworkStatus.Success
-                Log.d("MehulX", "onResponse: ${productList.value}")
-            }
-
-            override fun onFailure(call: Call<List<Product>?>, t: Throwable) {
-                productList.value =  emptyList()
-                networkState.value = NetworkStatus.Failed
-                Log.d("MehulX", "onFailure: ${t.message}")
-            }
-        })
-
+    fun getApiResponse() : List<Product> {
+        Log.d("textMX", "getApiResponse")
+        val response : Response<List<Product>> = retrofitData.execute()
+        return response.body() ?: listOf()
     }
 }
