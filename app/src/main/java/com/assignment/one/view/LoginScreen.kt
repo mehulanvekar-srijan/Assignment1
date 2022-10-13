@@ -1,6 +1,7 @@
 package com.assignment.one.view
 
 import android.util.Log
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -11,12 +12,14 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
+import com.assignment.one.R
 import com.assignment.one.viewmodel.LoginViewModel
 import com.assignment.one.ui.theme.*
 
@@ -31,23 +34,36 @@ fun LogInScreenTheme(
     Log.d("textMX", "LogInScreen: compose")
     Log.d("testPerf", "LogInScreen: compose")
 
-    Column(verticalArrangement = Arrangement.Center,
-        modifier = Modifier
-            .fillMaxSize()
-            .background(LoginBackground),
-        horizontalAlignment = Alignment.CenterHorizontally
+    Box(
+        modifier = Modifier.fillMaxSize()
     ) {
-        //User Name
-        DrawUserName(loginViewModel = loginViewModel)
+        Image(
+            painter = painterResource(id = R.drawable.ic_background),
+            contentDescription = "",
+            modifier = Modifier
+                .padding(0.dp)
+                .fillMaxSize(),
+            contentScale = ContentScale.Crop,
+        )
+        Column(
+            verticalArrangement = Arrangement.Center,
+            modifier = Modifier
+                .fillMaxSize()
+                .background(LoginBackground),
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            //User Name
+            DrawUserName(loginViewModel = loginViewModel)
 
-        //Password
-        DrawPassword(loginViewModel = loginViewModel)
+            //Password
+            DrawPassword(loginViewModel = loginViewModel)
 
-        //LetsGo Button
-        LetsGoButton(navHostControllerLambda(),loginViewModel)
+            //LetsGo Button
+            LetsGoButton(navHostControllerLambda(),loginViewModel)
 
-        if(loginViewModel.openDialog.value){
-            DrawAlertDialog(loginViewModel = loginViewModel)
+            if(loginViewModel.openDialog.value){
+                DrawAlertDialog(loginViewModel = loginViewModel)
+            }
         }
     }
 }
@@ -55,54 +71,56 @@ fun LogInScreenTheme(
 @Composable
 fun DrawUserName(loginViewModel: LoginViewModel) {
     Log.d("testPerf", "DrawUserName: called")
-    Row(modifier = Modifier,
-        verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.Center
-    ) {
-        Column(modifier = Modifier.padding(10.dp)){
-            Text(text = "User Name", color = LoginText, textAlign = TextAlign.Center)
-        }
-        Column(modifier = Modifier.padding(10.dp)){
-            OutlinedTextField(
-                value = loginViewModel.userNameState.value,
-                onValueChange = {
-                    loginViewModel.onUserNameValueChange(it)
-                },
-                label = { Text(text = "Enter user name") },
-            )
-        }
-    }
+    OutlinedTextField(
+        value = loginViewModel.userNameState.value,
+        onValueChange = {
+            loginViewModel.onUserNameValueChange(it)
+        },
+        label = { Text(text = "Enter user name") },
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(start = 20.dp, end = 20.dp),
+        colors = TextFieldDefaults.outlinedTextFieldColors(
+            textColor = White,
+            focusedLabelColor = SkyBlue,
+            focusedBorderColor = SkyBlue,
+            unfocusedLabelColor = LightBlue,
+            unfocusedBorderColor = LightBlue,
+            cursorColor = White,
+        ),
+    )
 }
 
 @Composable
 fun DrawPassword(loginViewModel: LoginViewModel) {
     Log.d("testPerf", "DrawPassword: called")
-    Row(modifier = Modifier,
-        verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.Center
-    ) {
-        Column(modifier = Modifier.padding(10.dp)){
-            Text(text = "Password ", color = LoginText, textAlign = TextAlign.Center)
-        }
-        Column(modifier = Modifier.padding(10.dp)){
-            OutlinedTextField(
-                value = loginViewModel.password.value,
-                onValueChange = {
-                    loginViewModel.onPasswordValueChange(it)
-                },
-                visualTransformation = if(loginViewModel.passwordVisibility.value) VisualTransformation.None else PasswordVisualTransformation(),
-                label = { Text(text = "Enter password") },
-                trailingIcon = {
-                    IconButton(onClick = { loginViewModel.onPasswordVisibilityChange() }) {
-                        if(loginViewModel.passwordVisibility.value)
-                            Icon(imageVector = Icons.Rounded.Lock, contentDescription = "", tint = Color.Red)
-                        else
-                            Icon(imageVector = Icons.Rounded.Lock, contentDescription = "", tint = Purple700)
-                    }
-                },
-            )
-        }
-    }
+    OutlinedTextField(
+        value = loginViewModel.password.value,
+        onValueChange = {
+            loginViewModel.onPasswordValueChange(it)
+        },
+        visualTransformation = if(loginViewModel.passwordVisibility.value) VisualTransformation.None else PasswordVisualTransformation(),
+        label = { Text(text = "Enter password") },
+        trailingIcon = {
+            IconButton(onClick = { loginViewModel.onPasswordVisibilityChange() }) {
+                if(loginViewModel.passwordVisibility.value)
+                    Icon(imageVector = Icons.Rounded.Lock, contentDescription = "", tint = Color.Red)
+                else
+                    Icon(imageVector = Icons.Rounded.Lock, contentDescription = "", tint = LightBlue)
+            }
+        },
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(start = 20.dp, end = 20.dp, top = 5.dp),
+        colors = TextFieldDefaults.outlinedTextFieldColors(
+            textColor = White,
+            focusedLabelColor = SkyBlue,
+            focusedBorderColor = SkyBlue,
+            unfocusedLabelColor = LightBlue,
+            unfocusedBorderColor = LightBlue,
+            cursorColor = White
+        ),
+    )
 }
 
 @Composable
@@ -119,12 +137,13 @@ fun LetsGoButton(navController: NavHostController, loginViewModel: LoginViewMode
             contentColor = LoginButtonText
         ),
     ) { Text(text = "Lets Go") }      // Button : Lets Go
-
 }
 
 @Composable
 fun DrawAlertDialog(loginViewModel: LoginViewModel) {
     AlertDialog(
+        backgroundColor = LightBlue,
+        contentColor = White,
         onDismissRequest = {
             loginViewModel.onDialogResponseChange(false)
         },
@@ -137,7 +156,12 @@ fun DrawAlertDialog(loginViewModel: LoginViewModel) {
         confirmButton = {
             Button(onClick = {
                 loginViewModel.onDialogResponseChange(false)
-            }) { Text("Ok") }
+            },
+                colors = ButtonDefaults.buttonColors(
+                    backgroundColor = DarkBlue,
+                    contentColor = White,
+                )
+            ) { Text("Ok") }
         },
     )
 }

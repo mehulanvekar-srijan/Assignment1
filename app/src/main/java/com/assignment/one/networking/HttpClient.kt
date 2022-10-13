@@ -1,10 +1,6 @@
 package com.assignment.one.networking
 
-import android.util.Log
-import androidx.compose.runtime.MutableState
 import com.assignment.one.domain.model.Product
-import retrofit2.Call
-import retrofit2.Callback
 import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
@@ -31,11 +27,4 @@ class HttpClient{
             NetResponse.Failed(listOf())
         }
     }
-
-    object CallBackObj: Callback<List<Product>?> {
-        override fun onResponse(call: Call<List<Product>?>, response: Response<List<Product>?>){}
-        override fun onFailure(call: Call<List<Product>?>, t: Throwable) {}
-    }
-
-    fun getApiResponse1() = retrofitData.enqueue(CallBackObj)
 }

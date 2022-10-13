@@ -11,6 +11,11 @@ val Typography = Typography(
     body1 = TextStyle(
         fontFamily = FontFamily.Default,
         fontWeight = FontWeight.Normal,
+        fontSize = 25.sp
+    ),
+    h1 = TextStyle(
+        fontFamily = FontFamily.Cursive,
+        fontWeight = FontWeight.Normal,
         fontSize = 16.sp
     ),
     h5 = TextStyle(

@@ -9,14 +9,14 @@ import androidx.compose.ui.graphics.Color
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
 
 private val DarkColorPalette = darkColors(
-    primary = Purple200,
-    primaryVariant = Purple700,
+    primary = Purple500,
+    primaryVariant = Purple200,
     secondary = Teal200
 )
 
 private val LightColorPalette = lightColors(
-    primary = Purple500,
-    primaryVariant = Purple700,
+    primary = Purple700,
+    primaryVariant = Purple200,
     secondary = Teal200
 
     /* Other default colors to override
@@ -38,9 +38,11 @@ fun Assignment1Theme(darkTheme: Boolean = isSystemInDarkTheme(), content: @Compo
     }
 
     val systemUiController = rememberSystemUiController()
-    systemUiController.setNavigationBarColor(
-        color = Purple700,
-        darkIcons = false,
+    systemUiController.setSystemBarsColor(
+        color = LightBlue,
+    )
+    systemUiController.setStatusBarColor(
+        color = DarkBlue,
     )
 
     MaterialTheme(
@@ -62,7 +64,11 @@ fun NoStatusBarTheme(darkTheme: Boolean = isSystemInDarkTheme(), content: @Compo
 
     val systemUiController = rememberSystemUiController()
     systemUiController.setSystemBarsColor(
-        color = Color.Transparent,
+        color = MaterialTheme.colors.secondary,
+        darkIcons = true,
+    )
+    systemUiController.setStatusBarColor(
+        color = MaterialTheme.colors.primary,
         darkIcons = true,
     )
 
