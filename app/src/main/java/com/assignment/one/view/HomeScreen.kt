@@ -9,6 +9,9 @@ import androidx.compose.foundation.lazy.GridCells
 import androidx.compose.foundation.lazy.LazyVerticalGrid
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Favorite
+import androidx.compose.material.icons.filled.ShoppingCart
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.SideEffect
@@ -40,69 +43,90 @@ fun HomeScreenTheme(homeScreenViewModel: HomeScreenViewModel = viewModel()){
         homeScreenViewModel.execute()
     }
 
-    if(homeScreenViewModel.networkStatusState.value == NetworkStatus.Fetching) {
-        Column(
-            horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.Center,
-            modifier = Modifier.fillMaxSize()
-        ) {
-            CircularProgressIndicator()
-            Text(text = "Fetching..")
+    Scaffold(
+        topBar = {
+            TopAppBar(
+                title = { Text(text = "mShop") },
+                backgroundColor = Purple700,
+                contentColor = White,
+                elevation = 10.dp,
+                actions = {
+                    IconButton(onClick = {}) {
+                        Icon(imageVector = Icons.Filled.Favorite,
+                            contentDescription = "")
+                    }
+                    IconButton(onClick = {}) {
+                        Icon(imageVector = Icons.Filled.ShoppingCart,
+                            contentDescription = "")
+                    }
+                }
+            )
         }
-    }
-    if(homeScreenViewModel.networkStatusState.value == NetworkStatus.Success){
-        LazyVerticalGrid(
-            cells = GridCells.Fixed(2),
-            modifier = Modifier
-                .background(Color.White)
-                .fillMaxSize(),
-            content = {
-                items(homeScreenViewModel.productListSate.value.size){ index ->
-                    Card(modifier = Modifier
-                        .fillMaxWidth()
-                        .height(250.dp)
-                        .padding(5.dp),
-                        elevation = 19.dp,
-                        shape = RoundedCornerShape(5.dp),
-                    ) {
-                        Image(painter = rememberImagePainter(homeScreenViewModel.productListSate.value[index].imageUrl),
-                            contentDescription = "",
-                            contentScale = ContentScale.Fit)
-
-                        Box( modifier = Modifier.padding(0.dp),
-                            contentAlignment = Alignment.BottomCenter,
+    ){
+        if(homeScreenViewModel.networkStatusState.value == NetworkStatus.Fetching) {
+            Column(
+                horizontalAlignment = Alignment.CenterHorizontally,
+                verticalArrangement = Arrangement.Center,
+                modifier = Modifier.fillMaxSize()
+            ) {
+                CircularProgressIndicator()
+                Text(text = "Fetching..")
+            }
+        }
+        if(homeScreenViewModel.networkStatusState.value == NetworkStatus.Success){
+            LazyVerticalGrid(
+                cells = GridCells.Fixed(2),
+                modifier = Modifier
+                    .background(Color.White)
+                    .fillMaxSize(),
+                content = {
+                    items(homeScreenViewModel.productListSate.value.size){ index ->
+                        Card(modifier = Modifier
+                            .fillMaxWidth()
+                            .height(250.dp)
+                            .padding(5.dp),
+                            elevation = 19.dp,
+                            shape = RoundedCornerShape(5.dp),
                         ) {
-                            Text(text = homeScreenViewModel.productListSate.value[index].productName,
-                                textAlign = TextAlign.Center,
-                                modifier = Modifier
-                                    .fillMaxHeight(0.2F)
-                                    .fillMaxWidth()
-                                    .background(
-                                        brush = Brush.verticalGradient(
-                                            colors = listOf(
-                                                NavyBlazer,
-                                                Inkwell
+                            Image(painter = rememberImagePainter(homeScreenViewModel.productListSate.value[index].imageUrl),
+                                contentDescription = "",
+                                contentScale = ContentScale.Fit)
+
+                            Box( modifier = Modifier.padding(0.dp),
+                                contentAlignment = Alignment.BottomCenter,
+                            ) {
+                                Text(text = homeScreenViewModel.productListSate.value[index].productName,
+                                    textAlign = TextAlign.Center,
+                                    modifier = Modifier
+                                        .fillMaxHeight(0.2F)
+                                        .fillMaxWidth()
+                                        .background(
+                                            brush = Brush.verticalGradient(
+                                                colors = listOf(
+                                                    NavyBlazer,
+                                                    Inkwell
+                                                )
                                             )
                                         )
-                                    )
-                                    .padding(3.dp),
-                                color = Color.White,
-                                maxLines = 2,
-                                overflow = TextOverflow.Ellipsis,
-                            )
+                                        .padding(3.dp),
+                                    color = Color.White,
+                                    maxLines = 2,
+                                    overflow = TextOverflow.Ellipsis,
+                                )
+                            }
                         }
                     }
                 }
+            )
+        }
+        if(homeScreenViewModel.networkStatusState.value == NetworkStatus.Failed) {
+            Column(
+                horizontalAlignment = Alignment.CenterHorizontally,
+                verticalArrangement = Arrangement.Center,
+                modifier = Modifier.fillMaxSize()
+            ) {
+                Text(text = "Failed..", color = Color.Red, fontSize = 30.sp)
             }
-        )
-    }
-    if(homeScreenViewModel.networkStatusState.value == NetworkStatus.Failed) {
-        Column(
-            horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.Center,
-            modifier = Modifier.fillMaxSize()
-        ) {
-            Text(text = "Failed..", color = Color.Red, fontSize = 30.sp)
         }
     }
 }
