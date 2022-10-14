@@ -4,7 +4,7 @@ import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
-import androidx.compose.material.Text
+import androidx.compose.material.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -69,5 +69,10 @@ fun DrawBackground(text: String,) {
 
 @Composable
 fun DrawContent(text: String) {
-    Text(text = "by $text", color = SplashScreenText, style = Typography.h1)
+    Text(
+        text = "by $text",
+        color = SplashScreenText,
+        style = Typography.h1,
+        modifier = Modifier.padding(bottom = 10.dp)
+    )
 }
