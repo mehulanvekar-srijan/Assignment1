@@ -7,6 +7,8 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Visibility
+import androidx.compose.material.icons.filled.VisibilityOff
 import androidx.compose.material.icons.rounded.Lock
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -79,7 +81,7 @@ fun DrawUserName(loginViewModel: LoginViewModel) {
         label = { Text(text = "Enter user name") },
         modifier = Modifier
             .fillMaxWidth()
-            .padding(start = 20.dp, end = 20.dp),
+            .padding(start = 25.dp, end = 25.dp),
         colors = TextFieldDefaults.outlinedTextFieldColors(
             textColor = White,
             focusedLabelColor = SkyBlue,
@@ -104,14 +106,14 @@ fun DrawPassword(loginViewModel: LoginViewModel) {
         trailingIcon = {
             IconButton(onClick = { loginViewModel.onPasswordVisibilityChange() }) {
                 if(loginViewModel.passwordVisibility.value)
-                    Icon(imageVector = Icons.Rounded.Lock, contentDescription = "", tint = Color.Red)
+                    Icon(imageVector = Icons.Filled.Visibility, contentDescription = "", tint = Color.Red)
                 else
-                    Icon(imageVector = Icons.Rounded.Lock, contentDescription = "", tint = LightBlue)
+                    Icon(imageVector = Icons.Filled.VisibilityOff, contentDescription = "", tint = LightBlue)
             }
         },
         modifier = Modifier
             .fillMaxWidth()
-            .padding(start = 20.dp, end = 20.dp, top = 5.dp),
+            .padding(start = 25.dp, end = 25.dp, top = 7.dp),
         colors = TextFieldDefaults.outlinedTextFieldColors(
             textColor = White,
             focusedLabelColor = SkyBlue,
@@ -131,7 +133,7 @@ fun LetsGoButton(navController: NavHostController, loginViewModel: LoginViewMode
         modifier = Modifier
             .fillMaxWidth(0.5F)
             .padding(horizontal = 20.dp)
-            .padding(top = 5.dp),
+            .padding(top = 7.dp),
         colors = ButtonDefaults.buttonColors(
             backgroundColor = LoginButtonBackground,
             contentColor = LoginButtonText

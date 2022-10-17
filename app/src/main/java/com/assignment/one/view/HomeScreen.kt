@@ -29,6 +29,7 @@ import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.NavHostController
 import coil.compose.rememberImagePainter
 import com.assignment.one.R
 import com.assignment.one.networking.NetworkStatus
@@ -36,14 +37,17 @@ import com.assignment.one.ui.theme.*
 import com.assignment.one.viewmodel.HomeScreenViewModel
 
 //Home Screen
-@OptIn(ExperimentalFoundationApi::class)
+@OptIn(ExperimentalFoundationApi::class, ExperimentalMaterialApi::class)
 @Composable
-fun HomeScreenTheme(homeScreenViewModel: HomeScreenViewModel = viewModel()){
+fun HomeScreenTheme(
+    navHostControllerLambda : () -> NavHostController,
+    homeScreenViewModel: HomeScreenViewModel = viewModel()
+){
 
     Log.d("textMX", "HomeScreen: compose")
 
     LaunchedEffect(key1 = true){
-        if(homeScreenViewModel.productListSate.value.isEmpty()) homeScreenViewModel.execute()
+        if(homeScreenViewModel.productListSate.value.isEmpty()) homeScreenViewModel.executeAsync()
     }
 
     Scaffold(
@@ -87,9 +91,15 @@ fun HomeScreenTheme(homeScreenViewModel: HomeScreenViewModel = viewModel()){
                         Card(modifier = Modifier
                             .fillMaxWidth()
                             .height(250.dp)
-                            .padding(5.dp),
+                            .padding(6.dp),
                             elevation = 19.dp,
-                            shape = RoundedCornerShape(5.dp),
+                            shape = RoundedCornerShape(bottomStart = 5.dp),
+                            onClick = {
+                                homeScreenViewModel.cardClicked(
+                                    navHostControllerLambda(),
+                                    homeScreenViewModel.productListSate.value[index]
+                                )
+                            },
                         ) {
                             Image(painter = rememberImagePainter(homeScreenViewModel.productListSate.value[index].imageUrl),
                                 contentDescription = "",

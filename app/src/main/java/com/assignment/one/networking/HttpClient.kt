@@ -1,6 +1,8 @@
 package com.assignment.one.networking
 
 import com.assignment.one.domain.model.Product
+import retrofit2.Call
+import retrofit2.Callback
 import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
@@ -18,6 +20,7 @@ class HttpClient{
 
     private val retrofitData = retrofitBuilder.getProductData()
 
+    //Synchronous call
     fun getApiResponse() : NetResponse {
         return try {
             val response : Response<List<Product>> = retrofitData.execute()
@@ -26,5 +29,23 @@ class HttpClient{
         catch (e: Exception){
             NetResponse.Failed(listOf())
         }
+    }
+
+    //Asynchronous call
+    fun getApiResponse(
+        mutateProductList : (List<Product>)->Unit,
+        mutateNetworkStatus : (NetworkStatus)->Unit
+    )  {
+        retrofitData.enqueue(object : Callback<List<Product>?> {
+            override fun onResponse(call: Call<List<Product>?>, response: Response<List<Product>?>){
+                mutateProductList(response.body() ?: listOf())
+                mutateNetworkStatus(NetworkStatus.Success)
+            }
+
+            override fun onFailure(call: Call<List<Product>?>, t: Throwable) {
+                mutateProductList(listOf())
+                mutateNetworkStatus(NetworkStatus.Failed)
+            }
+        })
     }
 }

@@ -5,13 +5,16 @@ import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import androidx.navigation.NavHostController
 import com.assignment.one.domain.model.Product
 import com.assignment.one.domain.repository.RemoteRepository
 import com.assignment.one.networking.NetResponse
 import com.assignment.one.networking.NetworkStatus
+import com.assignment.one.utils.Screen
 import kotlinx.coroutines.Deferred
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
+import kotlinx.coroutines.launch
 
 class HomeScreenViewModel : ViewModel() {
 
@@ -20,6 +23,16 @@ class HomeScreenViewModel : ViewModel() {
 
     private val _networkStatusState: MutableState<NetworkStatus> = mutableStateOf(NetworkStatus.Fetching)
     val networkStatusState: State<NetworkStatus> = _networkStatusState
+
+    //Functions that mutate State objects
+    private val mutateProductList : (List<Product>)->Unit =  { _productListSate.value = it }
+    private val mutateNetworkStatus : (NetworkStatus)->Unit =  { _networkStatusState.value = it }
+
+    fun executeAsync(){
+        viewModelScope.launch(Dispatchers.IO) {
+            RemoteRepository.fetchFromServer(mutateProductList,mutateNetworkStatus)
+        }
+    }
 
     suspend fun execute(){
 
@@ -43,5 +56,10 @@ class HomeScreenViewModel : ViewModel() {
             }
         }
 
+    }
+
+    fun cardClicked(navHostController: NavHostController, product: Product){
+        navHostController.currentBackStackEntry?.savedStateHandle?.set(key="product", value = product)
+        navHostController.navigate(Screen.ProductDetailsScreen.route)
     }
 }
